@@ -6,7 +6,7 @@ import { argonTheme, tabs } from "../constants";
 import Articles from "../screens/Articles";
 import { Block } from "galio-framework";
 // drawer
-import CustomDrawerContent from "./Menu";
+import CustomDrawerContent from "./Menu/Menu";
 import Elements from "../screens/Elements";
 // screens
 import Home from "../screens/Home";
@@ -19,11 +19,155 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createStackNavigator } from "@react-navigation/stack";
 
+// Import energy module screens
+import SolarScreen from "../features/modules/components/Solar/Solar";
+// import WindScreen from "../screens/Modules/Wind";
+// import GeothermalScreen from "../screens/Modules/Geothermal";
+// import HydropowerScreen from "../screens/Modules/Hydropower";
+// import BiomassScreen from "../screens/Modules/Biomass";
+
+// Import energy sharing screen
+// import EnergySharingScreen from "../screens/EnergySharing";
+// import RecommendationsScreen from "../screens/Recommendations";
+// import HelpSupportScreen from "../screens/HelpSupport";
+
 const { width } = Dimensions.get("screen");
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
+
+// Energy modules stack
+function ModulesStack(props) {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        mode: "card",
+        headerShown: true,
+      }}
+    >
+      <Stack.Screen
+        name="SolarEnergy"
+        component={SolarScreen}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header title="Solar Energy" navigation={navigation} scene={scene} />
+          ),
+          cardStyle: { backgroundColor: "#F8F9FE" },
+        }}
+      />
+      {/* <Stack.Screen
+        name="WindEnergy"
+        component={WindScreen}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header title="Wind Energy" navigation={navigation} scene={scene} />
+          ),
+          cardStyle: { backgroundColor: "#F8F9FE" },
+        }}
+      />
+      <Stack.Screen
+        name="GeothermalEnergy"
+        component={GeothermalScreen}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header title="Geothermal Energy" navigation={navigation} scene={scene} />
+          ),
+          cardStyle: { backgroundColor: "#F8F9FE" },
+        }}
+      />
+      <Stack.Screen
+        name="HydropowerEnergy"
+        component={HydropowerScreen}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header title="Hydropower" navigation={navigation} scene={scene} />
+          ),
+          cardStyle: { backgroundColor: "#F8F9FE" },
+        }}
+      />
+      <Stack.Screen
+        name="BiomassEnergy"
+        component={BiomassScreen}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header title="Biomass Energy" navigation={navigation} scene={scene} />
+          ),
+          cardStyle: { backgroundColor: "#F8F9FE" },
+        }}
+      /> */}
+    </Stack.Navigator>
+  );
+}
+
+// Energy sharing stack
+function EnergySharingStack(props) {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        mode: "card",
+        headerShown: true,
+      }}
+    >
+      {/* <Stack.Screen
+        name="EnergySharing"
+        component={EnergySharingScreen}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header title="Energy Sharing" navigation={navigation} scene={scene} />
+          ),
+          cardStyle: { backgroundColor: "#F8F9FE" },
+        }}
+      /> */}
+    </Stack.Navigator>
+  );
+}
+
+// Recommendations stack
+function RecommendationsStack(props) {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        mode: "card",
+        headerShown: true,
+      }}
+    >
+      {/* <Stack.Screen
+        name="Recommendations"
+        component={RecommendationsScreen}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header title="Recommendations" navigation={navigation} scene={scene} />
+          ),
+          cardStyle: { backgroundColor: "#F8F9FE" },
+        }}
+      /> */}
+    </Stack.Navigator>
+  );
+}
+
+// Help & Support stack
+function HelpSupportStack(props) {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        mode: "card",
+        headerShown: true,
+      }}
+    >
+      <Stack.Screen
+        name="HelpSupport"
+        component={HelpSupportScreen}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header title="Help & Support" navigation={navigation} scene={scene} />
+          ),
+          cardStyle: { backgroundColor: "#F8F9FE" },
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
 
 function ElementsStack(props) {
   return (
@@ -277,6 +421,36 @@ function AppStack(props) {
       <Drawer.Screen
         name="Articles"
         component={ArticlesStack}
+        options={{
+          headerShown: false,
+        }}
+      />
+      
+      {/* Energy Module Screens */}
+      <Drawer.Screen
+        name="SolarEnergy"
+        component={ModulesStack}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
+        name="EnergySharing"
+        component={EnergySharingStack}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
+        name="Recommendations"
+        component={RecommendationsStack}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
+        name="HelpSupport"
+        component={HelpSupportStack}
         options={{
           headerShown: false,
         }}

@@ -1,102 +1,106 @@
 import React from "react";
-import {
-  ImageBackground,
-  Image,
-  StyleSheet,
-  StatusBar,
-  Dimensions
-} from "react-native";
-import { Block, Button, Text, theme } from "galio-framework";
+import { StyleSheet, Dimensions, View, Text, Image, TouchableOpacity, StatusBar } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
-const { height, width } = Dimensions.get("screen");
-
-import argonTheme from "../constants/Theme";
-import Images from "../constants/Images";
+const { width, height } = Dimensions.get("screen");
 
 class Onboarding extends React.Component {
   render() {
     const { navigation } = this.props;
 
     return (
-      <Block flex style={styles.container}>
+      <View style={styles.container}>
         <StatusBar hidden />
-        <Block flex center>
-        <ImageBackground
-            source={Images.Onboarding}
-            style={{ height, width, zIndex: 1 }}
+        
+        {/* Background Image */}
+        <Image
+          source={require('../assets/imgs/ecopulse-logo-onboarding.png')}
+          style={styles.backgroundImage}
+        />
+        
+        {/* Overlay Gradient */}
+        <LinearGradient
+          colors={["rgba(0,0,0,0.1)", "rgba(0,0,0,0.8)"]}
+          style={styles.gradient}
+        />
+        
+        {/* Content */}
+        <View style={styles.content}>
+          {/* Logo or App Icon */}
+          <Image
+            source={require('../assets/imgs/ecopulse-logo.png')}
+            style={styles.logo}
+            resizeMode="contain"
           />
-        </Block>
-        <Block center>
-          <Image source={Images.LogoOnboarding} style={styles.logo} />
-        </Block>
-        <Block flex space="between" style={styles.padded}>
-          <Block flex space="around" style={{ zIndex: 2 }}>
-            <Block style={styles.title}>
-              <Block>
-                <Text color="white" size={60}>
-                  EcoPulse
-                </Text>
-              </Block>
-              <Block>
-                <Text color="white" size={60}>
-                  Empowering Energy
-                </Text>
-              </Block>
-              <Block style={styles.subTitle}>
-                <Text color="white" size={16}>
-                  A Predicted Analysis Platform for Peer-to-Peer Renewable Energy Sharing
-                </Text>
-                <Text color="white" size={16}>
-                  and Affordable Solution Recommendations in Urban Communities.
-                </Text>
-              </Block>
-            </Block>
-            <Block center>
-              <Button
-                style={styles.button}
-                color={argonTheme.COLORS.SECONDARY}
-                onPress={() => navigation.navigate("App")}
-                textStyle={{ color: argonTheme.COLORS.BLACK }}
-              >
-                Get Started
-              </Button>
-            </Block>
-          </Block>
-        </Block>
-      </Block>
+          
+          <Text style={styles.title}>EcoEnergy</Text>
+          <Text style={styles.subtitle}>
+            Monitor and optimize your renewable energy systems with our comprehensive dashboard
+          </Text>
+          
+          {/* Get Started Button */}
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate("App")}
+          >
+            <Text style={styles.buttonText}>Get Started</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: theme.COLORS.BLACK
+    flex: 1,
   },
-  padded: {
-    paddingHorizontal: theme.SIZES.BASE * 2,
-    position: "relative",
-    bottom: theme.SIZES.BASE,
-    zIndex: 2,
+  backgroundImage: {
+    width,
+    height,
+    position: "absolute",
   },
-  button: {
-    width: width - theme.SIZES.BASE * 4,
-    height: theme.SIZES.BASE * 3,
-    shadowRadius: 0,
-    shadowOpacity: 0
+  gradient: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    height: height,
+  },
+  content: {
+    flex: 1,
+    justifyContent: "flex-end",
+    padding: 30,
+    paddingBottom: 50,
   },
   logo: {
-    width: 200,
-    height: 60,
-    zIndex: 2,
-    position: 'relative',
-    marginTop: '-50%'
+    width: 100,
+    height: 100,
+    marginBottom: 20,
   },
   title: {
-    marginTop:'-5%'
+    fontSize: 36,
+    fontWeight: "bold",
+    color: "white",
+    marginBottom: 10,
   },
-  subTitle: {
-    marginTop: 20
-  }
+  subtitle: {
+    fontSize: 18,
+    color: "rgba(255,255,255,0.8)",
+    marginBottom: 30,
+    lineHeight: 26,
+  },
+  button: {
+    backgroundColor: "#4CAF50",
+    paddingVertical: 15,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
 });
 
 export default Onboarding;

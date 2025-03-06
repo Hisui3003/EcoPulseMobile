@@ -1,32 +1,35 @@
 {
   "expo": {
-    "name": "Argon FREE React Native",
-    "slug": "argon-free-react-native",
-    "privacy": "public",
-    "platforms": [
-      "ios",
-      "android"
-    ],
-    "version": "1.7.1",
+    "name": "EcoEnergy",
+    "slug": "eco-energy",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash2.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#58ae2b"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ecoenergy.app"
     },
-    "description": "Argon React Native, based on Argon Design System. Coded by Creative Tim",
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.ecoenergy.app"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "entryPoint": "./index.js",
     "plugins": [
-      "expo-asset",
       "expo-font"
     ]
   }
