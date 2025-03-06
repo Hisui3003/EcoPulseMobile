@@ -21,10 +21,10 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 // Import energy module screens
 import SolarScreen from "../features/modules/components/Solar/Solar";
-// import WindScreen from "../screens/Modules/Wind";
-// import GeothermalScreen from "../screens/Modules/Geothermal";
-// import HydropowerScreen from "../screens/Modules/Hydropower";
-// import BiomassScreen from "../screens/Modules/Biomass";
+import WindScreen from "../features/modules/components/Wind/Wind";
+import GeothermalScreen from "../features/modules/components/Geothermal/Geothermal";
+import HydropowerScreen from "../features/modules/components/Hydropower/Hydropower";
+import BiomassScreen from "../features/modules/components/Biomass/Biomass";
 
 // Import energy sharing screen
 // import EnergySharingScreen from "../screens/EnergySharing";
@@ -37,6 +37,94 @@ const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 
+let BioModuleStack = (props) => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        mode: "card",
+        headerShown: true,
+      }}
+    >
+      <Stack.Screen
+        name="BiomassEnergy"
+        component={BiomassScreen}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header title="Biomass Energy" navigation={navigation} scene={scene} />
+          ),
+          cardStyle: { backgroundColor: "#F8F9FE" },
+        }}
+      /> 
+    </Stack.Navigator>
+  )
+}
+
+let HydroModuleStack = (props) => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        mode: "card",
+        headerShown: true,
+      }}
+    >
+      <Stack.Screen
+        name="HydropowerEnergy"
+        component={HydropowerScreen}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header title="Hydropower" navigation={navigation} scene={scene} />
+          ),
+          cardStyle: { backgroundColor: "#F8F9FE" },
+        }}
+      />
+    </Stack.Navigator>
+  )
+}
+
+let GeoModuleStack = (props) => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        mode: "card",
+        headerShown: true,
+      }}
+    >
+      <Stack.Screen
+        name="GeothermalEnergy"
+        component={GeothermalScreen}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header title="Geothermal Energy" navigation={navigation} scene={scene} />
+          ),
+          cardStyle: { backgroundColor: "#F8F9FE" },
+        }}
+      />
+    </Stack.Navigator>
+  )
+}
+
+let WindModuleStack = (props) => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        mode: "card",
+        headerShown: true,
+      }}
+    >
+      <Stack.Screen
+        name="WindEnergy"
+        component={WindScreen}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header title="Wind Energy" navigation={navigation} scene={scene} />
+          ),
+          cardStyle: { backgroundColor: "#F8F9FE" },
+        }}
+      />
+    </Stack.Navigator>
+  )
+}
+
 // Energy modules stack
 function ModulesStack(props) {
   return (
@@ -46,6 +134,16 @@ function ModulesStack(props) {
         headerShown: true,
       }}
     >
+      {/* <Stack.Screen
+        name="WindEnergy"
+        component={WindScreen}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header title="Wind Energy" navigation={navigation} scene={scene} />
+          ),
+          cardStyle: { backgroundColor: "#F8F9FE" },
+        }}
+      /> */}
       <Stack.Screen
         name="SolarEnergy"
         component={SolarScreen}
@@ -57,16 +155,6 @@ function ModulesStack(props) {
         }}
       />
       {/* <Stack.Screen
-        name="WindEnergy"
-        component={WindScreen}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header title="Wind Energy" navigation={navigation} scene={scene} />
-          ),
-          cardStyle: { backgroundColor: "#F8F9FE" },
-        }}
-      />
-      <Stack.Screen
         name="GeothermalEnergy"
         component={GeothermalScreen}
         options={{
@@ -434,6 +522,41 @@ function AppStack(props) {
           headerShown: false,
         }}
       />
+      
+      <Drawer.Screen
+        name="WindEnergy"
+        component={WindModuleStack}
+        options={{
+          headerShown: false,
+        }}
+      />
+
+      <Drawer.Screen
+        name="GeothermalEnergy"
+        component={GeoModuleStack}
+        options={{
+          headerShown: false,
+        }}
+      />
+
+      <Drawer.Screen
+        name="HydropowerEnergy"
+        component={HydroModuleStack}
+        options={{
+          headerShown: false,
+        }}
+      />
+
+      <Drawer.Screen
+        name="BiomassEnergy"
+        component={BioModuleStack}
+        options={{
+          headerShown: false,
+        }}
+      />
+
+
+
       <Drawer.Screen
         name="EnergySharing"
         component={EnergySharingStack}

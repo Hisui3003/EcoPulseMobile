@@ -22,30 +22,30 @@ const energyModules = [
     image: require("../assets/imgs/solar-panel.png"),
     description: "Monitor your solar panel performance"
   },
-  // {
-  //   title: "Wind Energy",
-  //   icon: "thunderstorm",
-  //   color: "#03A9F4",
-  //   route: "WindEnergy",
-  //   image: require("../assets/imgs/wind-turbine.jpg"),
-  //   description: "Track wind turbine efficiency"
-  // },
-  // {
-  //   title: "Geothermal",
-  //   icon: "flame",
-  //   color: "#F44336",
-  //   route: "GeothermalEnergy",
-  //   image: require("../assets/imgs/geothermal-plant.jpg"),
-  //   description: "Analyze geothermal system metrics"
-  // },
-  // {
-  //   title: "Hydropower",
-  //   icon: "water",
-  //   color: "#2196F3",
-  //   route: "HydropowerEnergy",
-  //   image: require("../assets/imgs/hydropower-dam.jpg"),
-  //   description: "View hydroelectric generation data"
-  // }
+  {
+    title: "Wind Energy",
+    icon: "thunderstorm",
+    color: "#03A9F4",
+    route: "WindEnergy",
+    image: require("../assets/imgs/wind-turbine.png"),
+    description: "Track wind turbine efficiency"
+  },
+  {
+    title: "Geothermal",
+    icon: "flame",
+    color: "#F44336",
+    route: "GeothermalEnergy",
+    image: require("../assets/imgs/geothermal-plant.png"),
+    description: "Analyze geothermal system metrics"
+  },
+  {
+    title: "Hydropower",
+    icon: "water",
+    color: "#2196F3",
+    route: "HydropowerEnergy",
+    image: require("../assets/imgs/hydropower-dam.png"),
+    description: "View hydroelectric generation data"
+  }
 ];
 
 const Home = ({ navigation }) => {

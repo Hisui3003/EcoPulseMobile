@@ -14,7 +14,7 @@ export const userRoutes = {
   // Energy Modules
   export const moduleRoutes = {
     Solar: require('./features/modules/components/Solar/Solar').default,
-    // Wind: require('../screens/Modules/Wind').default,
+    Wind: require('../screens/Modules/Wind').default,
     // Geo: require('../screens/Modules/Geothermal').default,
     // Hydro: require('../screens/Modules/Hydropower').default,
     // Biomass: require('../screens/Modules/Biomass').default
