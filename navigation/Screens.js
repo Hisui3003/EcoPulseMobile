@@ -28,7 +28,7 @@ import BiomassScreen from "../features/modules/components/Biomass/Biomass";
 
 // Import energy sharing screen
 import EnergySharingScreen from "../screens/EnergySharing/EnergySharing";
-// import RecommendationsScreen from "../screens/Recommendations";
+import RecommendationsScreen from "../screens/Recommendations/Recommendations";
 // import HelpSupportScreen from "../screens/HelpSupport";
 
 const { width } = Dimensions.get("screen");
@@ -220,7 +220,7 @@ function RecommendationsStack(props) {
         headerShown: true,
       }}
     >
-      {/* <Stack.Screen
+      <Stack.Screen
         name="Recommendations"
         component={RecommendationsScreen}
         options={{
@@ -229,7 +229,7 @@ function RecommendationsStack(props) {
           ),
           cardStyle: { backgroundColor: "#F8F9FE" },
         }}
-      /> */}
+      />
     </Stack.Navigator>
   );
 }
