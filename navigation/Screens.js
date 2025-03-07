@@ -27,7 +27,7 @@ import HydropowerScreen from "../features/modules/components/Hydropower/Hydropow
 import BiomassScreen from "../features/modules/components/Biomass/Biomass";
 
 // Import energy sharing screen
-// import EnergySharingScreen from "../screens/EnergySharing";
+import EnergySharingScreen from "../screens/EnergySharing/EnergySharing";
 // import RecommendationsScreen from "../screens/Recommendations";
 // import HelpSupportScreen from "../screens/HelpSupport";
 
@@ -197,7 +197,7 @@ function EnergySharingStack(props) {
         headerShown: true,
       }}
     >
-      {/* <Stack.Screen
+      <Stack.Screen
         name="EnergySharing"
         component={EnergySharingScreen}
         options={{
@@ -206,7 +206,7 @@ function EnergySharingStack(props) {
           ),
           cardStyle: { backgroundColor: "#F8F9FE" },
         }}
-      /> */}
+      /> 
     </Stack.Navigator>
   );
 }
@@ -564,6 +564,7 @@ function AppStack(props) {
           headerShown: false,
         }}
       />
+      
       <Drawer.Screen
         name="Recommendations"
         component={RecommendationsStack}
