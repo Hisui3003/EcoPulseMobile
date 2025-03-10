@@ -127,7 +127,7 @@ const Solar = () => {
         </View>
 
         {/* Daily Solar Irradiance Section */}
-        <View style={styles.card}>
+        {/* <View style={styles.card}>
           <Text style={styles.sectionTitle}>Daily Solar Irradiance</Text>
           <Text style={styles.cardSubtitle}>Last 7 days irradiance and power output</Text>
 
@@ -146,10 +146,10 @@ const Solar = () => {
               </View>
             ))}
           </View>
-        </View>
+        </View> */}
 
         {/* Panel Performance Section */}
-        <View style={styles.card}>
+        {/* <View style={styles.card}>
           <Text style={styles.sectionTitle}>Panel Performance</Text>
           <Text style={styles.cardSubtitle}>Current efficiency and output by array</Text>
 
@@ -168,7 +168,7 @@ const Solar = () => {
               </View>
             ))}
           </View>
-        </View>
+        </View> */}
 
         <TouchableOpacity
           style={styles.downloadButton}

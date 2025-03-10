@@ -75,7 +75,7 @@ const Hydro = () => {
         </View>
 
         {/* Water Flow Data Section */}
-        <View style={styles.card}>
+        {/* <View style={styles.card}>
           <Text style={styles.sectionTitle}>Weekly Water Flow Data</Text>
           <Text style={styles.cardSubtitle}>Flow rate and power output trends</Text>
           <View style={styles.tableContainer}>
@@ -92,10 +92,10 @@ const Hydro = () => {
               </View>
             ))}
           </View>
-        </View>
+        </View> */}
 
         {/* Turbine Performance Section */}
-        <View style={styles.card}>
+        {/* <View style={styles.card}>
           <Text style={styles.sectionTitle}>Turbine Performance</Text>
           <Text style={styles.cardSubtitle}>Efficiency and output of each turbine</Text>
           <View style={styles.tableContainer}>
@@ -112,7 +112,7 @@ const Hydro = () => {
               </View>
             ))}
           </View>
-        </View>
+        </View> */}
 
         <TouchableOpacity style={styles.downloadButton} onPress={handleDownload}>
           <Text style={styles.downloadButtonText}>Download Summary</Text>
