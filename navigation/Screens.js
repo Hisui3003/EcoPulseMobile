@@ -451,6 +451,13 @@ export default function OnboardingStack(props) {
           headerTransparent: true,
         }}
       />
+      <Stack.Screen
+        name="Register"
+        component={Register}
+        options={{
+          headerTransparent: true,
+        }}
+      />
       <Stack.Screen name="App" component={AppStack} />
     </Stack.Navigator>
   );
