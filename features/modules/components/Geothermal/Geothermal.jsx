@@ -126,7 +126,7 @@ const Geo = () => {
         </View>
 
         {/* Geothermal Heat Flow Section */}
-        <View style={styles.card}>
+        {/* <View style={styles.card}>
           <Text style={styles.sectionTitle}>Geothermal Heat Flow</Text>
           <Text style={styles.cardSubtitle}>Last 7 days of heat extraction data</Text>
 
@@ -145,10 +145,10 @@ const Geo = () => {
               </View>
             ))}
           </View>
-        </View>
+        </View> */}
 
         {/* Plant Performance Section */}
-        <View style={styles.card}>
+        {/* <View style={styles.card}>
           <Text style={styles.sectionTitle}>Plant Performance</Text>
           <Text style={styles.cardSubtitle}>Current efficiency and output by plant</Text>
 
@@ -167,7 +167,7 @@ const Geo = () => {
               </View>
             ))}
           </View>
-        </View>
+        </View> */}
 
         <TouchableOpacity
           style={styles.downloadButton}

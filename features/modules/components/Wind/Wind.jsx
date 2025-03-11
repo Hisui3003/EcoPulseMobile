@@ -127,7 +127,7 @@ const Wind = () => {
         </View>
 
         {/* Wind Speed and Power Output Section */}
-        <View style={styles.card}>
+        {/* <View style={styles.card}>
           <Text style={styles.sectionTitle}>Wind Speed and Power Output</Text>
           <Text style={styles.cardSubtitle}>Last 7 days wind speed and turbine output</Text>
 
@@ -146,10 +146,10 @@ const Wind = () => {
               </View>
             ))}
           </View>
-        </View>
+        </View> */}
 
         {/* Turbine Performance Section */}
-        <View style={styles.card}>
+        {/* <View style={styles.card}>
           <Text style={styles.sectionTitle}>Turbine Performance</Text>
           <Text style={styles.cardSubtitle}>Current efficiency and output by turbine</Text>
 
@@ -168,7 +168,7 @@ const Wind = () => {
               </View>
             ))}
           </View>
-        </View>
+        </View> */}
 
         <TouchableOpacity
           style={styles.downloadButton}

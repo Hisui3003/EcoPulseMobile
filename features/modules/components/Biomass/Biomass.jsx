@@ -127,7 +127,7 @@ const Biomass = () => {
         </View>
 
         {/* Biomass Fuel Efficiency Section */}
-        <View style={styles.card}>
+        {/* <View style={styles.card}>
           <Text style={styles.sectionTitle}>Biomass Fuel Efficiency</Text>
           <Text style={styles.cardSubtitle}>Last 7 days fuel efficiency and energy output</Text>
 
@@ -146,10 +146,10 @@ const Biomass = () => {
               </View>
             ))}
           </View>
-        </View>
+        </View> */}
 
         {/* Biomass Plant Performance Section */}
-        <View style={styles.card}>
+        {/* <View style={styles.card}>
           <Text style={styles.sectionTitle}>Biomass Plant Performance</Text>
           <Text style={styles.cardSubtitle}>Current efficiency and output by plant</Text>
 
@@ -168,7 +168,7 @@ const Biomass = () => {
               </View>
             ))}
           </View>
-        </View>
+        </View> */}
 
         <TouchableOpacity
           style={styles.downloadButton}
