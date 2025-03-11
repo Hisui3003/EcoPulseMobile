@@ -31,6 +31,8 @@ import EnergySharingScreen from "../screens/EnergySharing/EnergySharing";
 import RecommendationsScreen from "../screens/Recommendations/Recommendations";
 // import HelpSupportScreen from "../screens/HelpSupport";
 
+import Login from "../screens/Login";
+
 const { width } = Dimensions.get("screen");
 
 const Stack = createStackNavigator();
@@ -439,6 +441,13 @@ export default function OnboardingStack(props) {
         name="Onboarding"
         component={Onboarding}
         option={{
+          headerTransparent: true,
+        }}
+      />
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{
           headerTransparent: true,
         }}
       />

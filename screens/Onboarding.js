@@ -14,7 +14,7 @@ class Onboarding extends React.Component {
         
         {/* Background Image */}
         <Image
-          source={require('../assets/imgs/ecopulse-logo-onboarding.png')}
+          source={require('../assets/imgs/splash.png')}
           style={styles.backgroundImage}
         />
         
@@ -41,7 +41,7 @@ class Onboarding extends React.Component {
           {/* Get Started Button */}
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate("App")}
+            onPress={() => navigation.navigate("Login")}
           >
             <Text style={styles.buttonText}>Get Started</Text>
           </TouchableOpacity>

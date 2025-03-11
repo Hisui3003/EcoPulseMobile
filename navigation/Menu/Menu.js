@@ -141,6 +141,13 @@ function CustomDrawerContent({ navigation }) {
           {navigationData.map(renderNavigationItem)}
         </Block>
       </ScrollView>
+
+      <TouchableOpacity
+        style={styles.logoutButton}
+        onPress={() => navigation.navigate('Login')}
+      >
+        <Text style={styles.logoutButtonText}>Logout</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -172,6 +179,7 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flex: 1,
+    marginBottom: 5,
   },
   navigationContainer: {
     paddingHorizontal: 16,
@@ -219,6 +227,15 @@ const styles = StyleSheet.create({
   },
   childrenContainer: {
     marginLeft: 16,
+  },
+  logoutButton: {
+    padding: 16,
+    alignItems: "center",
+    marginBottom: 15,
+  },
+  logoutButtonText: {
+    color: "#FF5678",
+    fontSize: 14,
   },
 });
 
