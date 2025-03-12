@@ -27,7 +27,7 @@ import HydropowerScreen from "../features/modules/components/Hydropower/Hydropow
 import BiomassScreen from "../features/modules/components/Biomass/Biomass";
 
 // Import energy sharing screen
-import EnergySharingScreen from "../screens/EnergySharing/EnergySharing";
+import EnergySharingScreen from "../screens/index";
 import RecommendationsScreen from "../screens/Recommendations/Recommendations";
 // import HelpSupportScreen from "../screens/HelpSupport";
 

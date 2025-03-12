@@ -3,11 +3,22 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f6f8fa',
+    backgroundColor: '#F8F9FA',
   },
   scrollContent: {
     padding: 20,
     paddingBottom: 40,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+  },
+  loadingText: {
+    marginTop: 12,
+    fontSize: 16,
+    color: '#FF6B6B',
   },
   headerContainer: {
     marginBottom: 20,
@@ -15,195 +26,163 @@ const styles = StyleSheet.create({
   titleRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 12,
+  },
+  iconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: '#F1F5F9',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
   },
   headerTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginLeft: 8,
-    color: '#6B4226', // Earthy tone
+    color: '#1E293B',
   },
   selectedRange: {
-    fontSize: 16,
-    color: '#A0522D', // Warm brown
+    fontSize: 15,
+    color: '#64748B',
     marginTop: 4,
   },
-  pickerContainer: {
-    marginBottom: 20,
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 15,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  card: {
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 20,
-    marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    color: '#6B4226', // Earthy tone
-  },
-  generationValue: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#D9534F', // Volcanic red
-    marginBottom: 4,
-  },
-  generationSubtitle: {
-    fontSize: 14,
-    color: '#A0522D', // Warm brown
-    marginBottom: 20,
-  },
-  cardSubtitle: {
-    fontSize: 14,
-    color: '#A0522D',
-    marginBottom: 15,
-  },
-  tableContainer: {
-    marginTop: 10,
+  connectionCard: {
+    backgroundColor: '#FFF7ED',
     borderRadius: 8,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
+    padding: 12,
+    marginBottom: 12,
+    borderLeftWidth: 4,
+    borderLeftColor: '#FF6B6B',
   },
-  tableHeader: {
-    flexDirection: 'row',
-    backgroundColor: '#FF5733', // Lava orange-red
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
-  },
-  tableHeaderCell: {
-    flex: 1,
-    fontWeight: 'bold',
-    fontSize: 14,
-    color: '#fff',
-    textAlign: 'center',
-  },
-  tableRow: {
-    flexDirection: 'row',
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
-  },
-  tableRowEven: {
-    backgroundColor: '#f9f9f9',
-  },
-  tableCell: {
-    flex: 1,
-    fontSize: 14,
-    textAlign: 'center',
-    color: '#6B4226',
-  },
-  downloadButton: {
-    backgroundColor: '#D9534F', // Volcanic red
-    padding: 15,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  downloadButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  loadingText: {
-    marginTop: 12,
-    fontSize: 16,
-    color: '#A0522D',
-  },
-
-  // Connection status styles
   connectionIndicator: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 4,
-    marginBottom: 8,
   },
   connectionDot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
     marginRight: 8,
   },
   connectionText: {
     fontSize: 14,
-    color: '#A0522D',
+    color: '#475569',
   },
-
-  // Error screen styles
-  errorContainer: {
-    flex: 1,
+  pickerCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 2,
+  },
+  yearPicker: {
+    marginTop: 8,
+  },
+  card: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 20,
+    paddingBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 2,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#1E293B',
+    marginBottom: 8,
+  },
+  generationValue: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#FF6B6B',
+    marginBottom: 4,
+  },
+  cardSubtitle: {
+    fontSize: 14,
+    color: '#64748B',
+    marginBottom: 20,
+  },
+  noDataContainer: {
+    height: 220,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    backgroundColor: '#F8FAFC',
+    borderRadius: 8,
   },
-  errorTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#D9534F', // Volcanic red
-    marginTop: 16,
-    marginBottom: 8,
+  noDataText: {
+    marginTop: 12,
+    fontSize: 14,
+    color: '#94A3B8',
+    textAlign: 'center',
+  },
+  actionButtonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+  },
+  pdfButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FF6B6B',
+    borderRadius: 8,
+    padding: 12,
+    flex: 1,
+    marginRight: 8,
+  },
+  shareButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FF9E9E',
+    borderRadius: 8,
+    padding: 12,
+    flex: 1,
+    marginLeft: 8,
+  },
+  buttonText: {
+    color: '#FFFFFF',
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  disabledButton: {
+    opacity: 0.7,
+  },
+  errorContainer: {
+    backgroundColor: '#FEE2E2',
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 20,
   },
   errorText: {
-    fontSize: 16,
-    color: '#A0522D',
-    textAlign: 'center',
-    marginBottom: 8,
-  },
-  errorSubtext: {
+    color: '#B91C1C',
     fontSize: 14,
-    color: '#888',
-    textAlign: 'center',
-    marginBottom: 24,
   },
-  retryButton: {
-    backgroundColor: '#FF5733', // Lava orange-red
-    paddingVertical: 12,
-    paddingHorizontal: 24,
+  infoCard: {
+    backgroundColor: '#F1F5F9',
     borderRadius: 8,
+    padding: 12,
   },
-  retryButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-
-  // Debug button (only shown in dev mode)
-  debugButton: {
-    backgroundColor: '#6B4226',
-    padding: 10,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginTop: 8,
-    marginBottom: 10,
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  debugButtonText: {
-    color: '#fff',
+  infoTitle: {
     fontSize: 14,
-    marginLeft: 6,
+    fontWeight: '600',
+    color: '#475569',
+    marginBottom: 4,
+  },
+  infoText: {
+    fontSize: 13,
+    color: '#64748B',
+    lineHeight: 18,
   },
 });
 

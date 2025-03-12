@@ -1,125 +1,212 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
-  ScrollView,
   View,
   Text,
   TouchableOpacity,
   ActivityIndicator,
   SafeAreaView,
   Dimensions,
+  ScrollView,
+  StatusBar,
   Alert
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { YearRangePicker } from '../../../../components/index'; // Adjust path based on your structure
-import { useHydroAnalytics } from './hydroHook';
-import SimpleChart from './Chart';
+import ViewShot from "react-native-view-shot";
+import { YearRangePicker } from "../../../../components";
+import ImprovedChart from './Chart';
+import useEnergyAnalytics from "../../../../store/useEnergyAnalytics";
+
+// Import styles
 import styles from './styles';
 
 const { width } = Dimensions.get("screen");
 
-const Hydro = () => {
+const HydroEnergy = () => {
+  // Define energy type for this screen
+  const ENERGY_TYPE = 'hydro';
+  
+  // Use our unified hook with 'hydro' as the energy type
   const {
     generationData,
     currentProjection,
     loading,
-    selectedStartYear,
-    selectedEndYear,
+    error,
+    connectionStatus,
+    startYear,
+    endYear,
     handleStartYearChange,
     handleEndYearChange,
     handleDownload,
-    waterFlowData,
-    turbinePerformance
-  } = useHydroAnalytics();
+    handleDownloadPDF,
+    handleShareText,
+    pdfGenerating,
+    chartRef,
+    config
+  } = useEnergyAnalytics(ENERGY_TYPE);
 
+  // Store formatted years in state to avoid calculations during render
+  const [yearValues, setYearValues] = useState({
+    startYear: 0,
+    endYear: 0,
+    yearDiff: 0
+  });
+  
+  // Format year values in effect, not during render
+  useEffect(() => {
+    // Safely get year values
+    const getYearValue = (dateObj) => {
+      if (typeof dateObj === 'undefined') return new Date().getFullYear();
+      if (typeof dateObj === 'number') return dateObj;
+      if (dateObj && typeof dateObj.year === 'function') return dateObj.year();
+      return new Date().getFullYear();
+    };
+    
+    const startYearValue = getYearValue(startYear);
+    const endYearValue = getYearValue(endYear);
+    
+    setYearValues({
+      startYear: startYearValue,
+      endYear: endYearValue,
+      yearDiff: endYearValue - startYearValue
+    });
+  }, [startYear, endYear]);
+
+  // Handle loading state
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#0077B6" />
-        <Text style={styles.loadingText}>Loading Hydropower Analytics...</Text>
+        <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
+        <ActivityIndicator size="large" color="#2E90E5" />
+        <Text style={styles.loadingText}>Loading data...</Text>
       </View>
     );
   }
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor="#F8F9FA" />
+      
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
+        {/* Header Section */}
         <View style={styles.headerContainer}>
           <View style={styles.titleRow}>
-            <Ionicons name="water" size={24} color="#0077B6" />
-            <Text style={styles.headerTitle}>Hydropower Analytics</Text>
+            <View style={styles.iconContainer}>
+              <Ionicons name="water" size={24} color="#2E90E5" />
+            </View>
+            <Text style={styles.headerTitle}>Hydropower</Text>
           </View>
+          
+          {connectionStatus === 'disconnected' && (
+            <View style={styles.connectionCard}>
+              <View style={styles.connectionIndicator}>
+                <View style={[styles.connectionDot, { backgroundColor: '#FF6B6B' }]} />
+                <Text style={styles.connectionText}>Using demo data</Text>
+              </View>
+            </View>
+          )}
+          
           <Text style={styles.selectedRange}>
-            Selected Range: {selectedStartYear} - {selectedEndYear} ({selectedEndYear - selectedStartYear} years)
+            Selected Range: {yearValues.startYear} - {yearValues.endYear} ({yearValues.yearDiff} years)
           </Text>
         </View>
 
-        <View style={styles.pickerContainer}>
+        {/* Year Range Picker */}
+        <View style={styles.pickerCard}>
           <YearRangePicker
-            initialStartYear={selectedStartYear}
-            initialEndYear={selectedEndYear}
+            initialStartYear={yearValues.startYear}
+            initialEndYear={yearValues.endYear}
             onStartYearChange={handleStartYearChange}
             onEndYearChange={handleEndYearChange}
+            style={styles.yearPicker}
+            primaryColor="#2E90E5"
           />
         </View>
 
+        {/* Power Generation Card */}
         <View style={styles.card}>
           <Text style={styles.sectionTitle}>Power Generation Trend</Text>
-          <Text style={styles.generationValue}>{currentProjection} GWh</Text>
-          <Text style={styles.generationSubtitle}>Predictive Analysis of Hydropower Generation</Text>
-          {generationData.length > 0 && (
-            <SimpleChart data={generationData} width={width - 60} height={220} />
+          <Text style={[styles.generationValue, { color: "#2E90E5" }]}>
+            {currentProjection ? currentProjection.toFixed(1) : '--'} GWh
+          </Text>
+          <Text style={styles.cardSubtitle}>
+            Predictive Analysis Generation projection
+          </Text>
+
+          {/* Chart Component with ViewShot wrapper */}
+          {generationData && generationData.length > 0 ? (
+            <ViewShot ref={chartRef} options={{format: 'png', quality: 0.8}}>
+              <ImprovedChart
+                data={generationData}
+                width={width - 40}
+                height={220}
+                color="#2E90E5"
+                type="bar"
+                showValues={false}
+              />
+            </ViewShot>
+          ) : (
+            <View style={styles.noDataContainer}>
+              <Ionicons name="analytics-outline" size={40} color="#CBD5E1" />
+              <Text style={styles.noDataText}>No data available for selected years</Text>
+            </View>
           )}
         </View>
-
-        {/* Water Flow Data Section */}
-        {/* <View style={styles.card}>
-          <Text style={styles.sectionTitle}>Weekly Water Flow Data</Text>
-          <Text style={styles.cardSubtitle}>Flow rate and power output trends</Text>
-          <View style={styles.tableContainer}>
-            <View style={styles.tableHeader}>
-              <Text style={styles.tableHeaderCell}>Day</Text>
-              <Text style={styles.tableHeaderCell}>Flow Rate (m³/s)</Text>
-              <Text style={styles.tableHeaderCell}>Power (kWh)</Text>
-            </View>
-            {waterFlowData.map((item, index) => (
-              <View key={index} style={[styles.tableRow, index % 2 === 0 ? styles.tableRowEven : null]}>
-                <Text style={styles.tableCell}>{item.day}</Text>
-                <Text style={styles.tableCell}>{item.flowRate.toFixed(1)}</Text>
-                <Text style={styles.tableCell}>{item.power.toFixed(1)}</Text>
-              </View>
-            ))}
+        
+        {/* Share/Download Buttons */}
+        <View style={styles.actionButtonsContainer}>
+          {/* PDF Download Button */}
+          <TouchableOpacity
+            style={[styles.pdfButton, pdfGenerating && styles.disabledButton]}
+            onPress={handleDownloadPDF}
+            activeOpacity={0.8}
+            disabled={pdfGenerating}
+          >
+            {pdfGenerating ? (
+              <ActivityIndicator size="small" color="white" />
+            ) : (
+              <>
+                <Ionicons name="document-text-outline" size={20} color="white" style={{ marginRight: 8 }} />
+                <Text style={styles.buttonText}>Download PDF</Text>
+              </>
+            )}
+          </TouchableOpacity>
+          
+          {/* Share Button */}
+          <TouchableOpacity
+            style={styles.shareButton}
+            onPress={handleShareText}
+            activeOpacity={0.8}
+          >
+            <Ionicons name="share-outline" size={20} color="white" style={{ marginRight: 8 }} />
+            <Text style={styles.buttonText}>Share Summary</Text>
+          </TouchableOpacity>
+        </View>
+        
+        {/* Error message if present */}
+        {error && (
+          <View style={styles.errorContainer}>
+            <Text style={styles.errorText}>{error}</Text>
           </View>
-        </View> */}
-
-        {/* Turbine Performance Section */}
-        {/* <View style={styles.card}>
-          <Text style={styles.sectionTitle}>Turbine Performance</Text>
-          <Text style={styles.cardSubtitle}>Efficiency and output of each turbine</Text>
-          <View style={styles.tableContainer}>
-            <View style={styles.tableHeader}>
-              <Text style={styles.tableHeaderCell}>Turbine</Text>
-              <Text style={styles.tableHeaderCell}>Efficiency (%)</Text>
-              <Text style={styles.tableHeaderCell}>Output (kWh)</Text>
-            </View>
-            {turbinePerformance.map((item, index) => (
-              <View key={index} style={[styles.tableRow, index % 2 === 0 ? styles.tableRowEven : null]}>
-                <Text style={styles.tableCell}>{item.turbine}</Text>
-                <Text style={styles.tableCell}>{item.efficiency.toFixed(1)}</Text>
-                <Text style={styles.tableCell}>{item.output.toFixed(1)}</Text>
-              </View>
-            ))}
-          </View>
-        </View> */}
-
-        <TouchableOpacity style={styles.downloadButton} onPress={handleDownload}>
-          <Text style={styles.downloadButtonText}>Download Summary</Text>
-        </TouchableOpacity>
+        )}
+        
+        {/* Data Source Information */}
+        <View style={styles.infoCard}>
+          <Text style={styles.infoTitle}>
+            <Ionicons name="information-circle-outline" size={14} /> Data Source
+          </Text>
+          <Text style={styles.infoText}>
+            {yearValues.startYear > 2023 || yearValues.endYear > 2023 ? 
+              "Historical data (2019-2023) used to project values for future years." :
+              "Data from official energy generation records."
+            }
+          </Text>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default Hydro;
+export default HydroEnergy;
