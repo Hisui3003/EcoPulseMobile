@@ -126,77 +126,7 @@ export const USER_NAVIGATION = [
   }
 ];
 
-export const ADMIN_NAVIGATION = [
-  {
-    kind: 'header',
-    segment: 'main-menu',
-    title: 'Admin Console',
-  },
-  {
-    kind: 'item',
-    segment: 'modules',
-    title: 'Modules Management',
-    iconName: 'modules',
-    children: [
-      {
-        kind: 'item',
-        segment: 'modules-solar',
-        title: 'Solar Energy',
-        iconName: 'solar',
-        path: 'SolarEnergy',
-      },
-      {
-        kind: 'item',
-        segment: 'wind',
-        title: 'Wind Energy',
-        iconName: 'wind',
-        path: 'WindEnergy',
-      },
-      {
-        kind: 'item',
-        segment: 'geothermal',
-        title: 'Geothermal',
-        iconName: 'geothermal',
-        path: 'GeothermalEnergy',
-      },
-      {
-        kind: 'item',
-        segment: 'hydropower',
-        title: 'Hydropower',
-        iconName: 'hydropower',
-        path: 'HydropowerEnergy',
-      },
-      {
-        kind: 'item',
-        segment: 'biomass',
-        title: 'Biomass',
-        iconName: 'biomass',
-        path: 'BiomassEnergy',
-      },
-    ],
-  },
-  {
-    kind: 'item',
-    segment: 'manage-users',
-    title: 'Manage Users',
-    iconName: 'profile',
-    path: 'Profile',
-  },
-  {
-    kind: 'item',
-    segment: 'analytics',
-    title: 'Analytics Dashboard',
-    iconName: 'recommendation',
-    path: 'Recommendations',
-  },
-  {
-    kind: 'item',
-    segment: 'client-tickets',
-    title: 'Help Tickets',
-    iconName: 'help',
-    path: 'HelpSupport',
-  },
-];
+
 
 /**
  * Map icon names to the appropriate icon properties

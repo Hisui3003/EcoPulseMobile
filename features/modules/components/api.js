@@ -1,158 +1,161 @@
-// Complete api.js file with improved networking configuration
-
+// src/features/modules/components/api.js
 import { Platform } from 'react-native';
 
-// Get local IP address for development - this is just an example
-// You'll need to replace this with your actual computer's IP address on your network
-const MY_LOCAL_IP = '192.168.1.X'; // Replace X with your actual IP's last digits
+let Constants = null;
+try {
+  Constants = require('expo-constants').default;
+} catch (error) {
+  console.log('Could not import expo-constants:', error);
+}
 
-// API Base URL configuration
-export const getBaseUrl = () => {
-  if (!__DEV__) {
-    return "https://production-api-url.com";
+// Get base URL based on platform and environment
+const getBaseUrl = () => {
+  // Try to get IP from Expo if available
+  try {
+    // For Expo on physical devices
+    if (Constants?.manifest?.debuggerHost) {
+      // Get the IP address from Expo's debuggerHost
+      const hostIp = Constants.manifest.debuggerHost.split(':').shift();
+      return `http://${hostIp}:8000`;
+    }
+
+    // For newer Expo SDK versions
+    if (Constants?.expoConfig?.hostUri) {
+      const hostIp = Constants.expoConfig.hostUri.split(':').shift();
+      return `http://${hostIp}:8000`;
+    }
+  } catch (error) {
+    console.log('Error accessing Expo Constants:', error);
   }
 
-  // Different handling based on platform and environment
+  // Default cases for simulators/emulators
   if (Platform.OS === 'android') {
-    // For Android emulator
     return 'http://10.0.2.2:8000';
   } else if (Platform.OS === 'ios') {
-    // For iOS simulator
     return 'http://localhost:8000';
   } else {
-    // For physical devices (both platforms)
-    return `http://${MY_LOCAL_IP}:8000`;
+    return 'http://localhost:8000';
   }
 };
 
-const BASE_URL = getBaseUrl();
-console.log('API Base URL:', BASE_URL);
-
-// Add a configurable timeout that can be longer for slower connections
-const DEFAULT_TIMEOUT = 15000; // 15 seconds
-
-// Implement a fetch with timeout since React Native's fetch doesn't support timeout option
-const fetchWithTimeout = async (url, options = {}, timeout = DEFAULT_TIMEOUT) => {
-  // Create an abort controller to handle timeouts
-  const controller = new AbortController();
-  const { signal } = controller;
-
-  // Set up the timeout
-  const timeoutId = setTimeout(() => {
-    controller.abort();
-  }, timeout);
+// Parse response to handle NaN values
+const parseResponse = async (response) => {
+  const text = await response.text();
+  // Replace NaN, Infinity values before parsing
+  const sanitizedText = text
+    .replace(/: NaN/g, ': null')
+    .replace(/: Infinity/g, ': null')
+    .replace(/: -Infinity/g, ': null');
 
   try {
-    // Execute the fetch with the signal
-    const response = await fetch(url, { ...options, signal });
-    clearTimeout(timeoutId);
-    return response;
+    return JSON.parse(sanitizedText);
   } catch (error) {
-    clearTimeout(timeoutId);
-    if (error.name === 'AbortError') {
-      throw new Error('Request timeout: The server took too long to respond');
-    }
-    throw error;
+    console.error('Error parsing response:', error);
+    throw new Error('Invalid JSON response');
   }
 };
 
+// API methods using fetch
 const api = {
-  get: async (url, timeout = DEFAULT_TIMEOUT) => {
-    const fullUrl = `${BASE_URL}${url}`;
-    console.log('Fetching from URL:', fullUrl);
+  // Base URL for API requests
+  baseUrl: getBaseUrl(),
 
+  // GET request
+  get: async (endpoint) => {
     try {
-      const response = await fetchWithTimeout(
-        fullUrl,
-        {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          }
+      const url = `${api.baseUrl}${endpoint}`;
+      console.log(`Making GET request to: ${url}`);
+      
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
         },
-        timeout
-      );
-
-      console.log('Response status:', response.status);
+      });
 
       if (!response.ok) {
-        console.error('Response error:', response.status, response.statusText);
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        throw new Error(`API error: ${response.status}`);
       }
 
-      const data = await response.json();
-      console.log('Data received successfully');
-      return { data };
+      const data = await parseResponse(response);
+      return { data, status: response.status, statusText: response.statusText };
     } catch (error) {
-      console.error('Fetch error details:', error.message);
-
-      // More specific error handling
-      if (error.message.includes('Network request failed')) {
-        console.error('Network connectivity issue - check if server is running and accessible');
-      } else if (error.message.includes('timeout')) {
-        console.error('Request timed out - server might be overloaded or unreachable');
-      } else if (error.message.includes('JSON')) {
-        console.error('Invalid JSON response from server');
-      }
-
+      console.error('API Request failed:', error);
       throw error;
     }
   },
 
-  post: async (url, data = {}, timeout = DEFAULT_TIMEOUT) => {
-    const fullUrl = `${BASE_URL}${url}`;
-    console.log('POSTing to URL:', fullUrl);
-
+  // POST request
+  post: async (endpoint, body) => {
     try {
-      const response = await fetchWithTimeout(
-        fullUrl,
-        {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data)
+      const response = await fetch(`${api.baseUrl}${endpoint}`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
         },
-        timeout
-      );
+        body: JSON.stringify(body),
+      });
 
       if (!response.ok) {
-        console.error('POST response error:', response.status, response.statusText);
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        throw new Error(`API error: ${response.status}`);
       }
 
-      const responseData = await response.json();
-      return { data: responseData };
+      const data = await parseResponse(response);
+      return { data, status: response.status, statusText: response.statusText };
     } catch (error) {
-      console.error('POST error details:', error.message);
+      console.error('API Request failed:', error);
       throw error;
     }
   },
 
-  // Test connection method with enhanced error handling
-  testConnection: async () => {
+  // PUT request
+  put: async (endpoint, body) => {
     try {
-      console.log('Testing connection to:', `${BASE_URL}/api/test/`);
-      const response = await fetchWithTimeout(
-        `${BASE_URL}/api/test/`,
-        {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-          }
+      const response = await fetch(`${api.baseUrl}${endpoint}`, {
+        method: 'PUT',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
         },
-        5000 // Shorter timeout for connection test
-      );
+        body: JSON.stringify(body),
+      });
 
-      console.log('Test connection status:', response.status);
-      return response.ok;
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+      }
+
+      const data = await parseResponse(response);
+      return { data, status: response.status, statusText: response.statusText };
     } catch (error) {
-      console.error('Connection test failed:', error.message);
-      return false;
+      console.error('API Request failed:', error);
+      throw error;
+    }
+  },
+
+  // DELETE request
+  delete: async (endpoint) => {
+    try {
+      const response = await fetch(`${api.baseUrl}${endpoint}`, {
+        method: 'DELETE',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+      }
+
+      const data = await parseResponse(response);
+      return { data, status: response.status, statusText: response.statusText };
+    } catch (error) {
+      console.error('API Request failed:', error);
+      throw error;
     }
   }
 };
-api.getBaseUrl = getBaseUrl;
+
 export default api;

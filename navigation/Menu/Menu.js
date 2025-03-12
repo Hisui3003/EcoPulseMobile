@@ -95,7 +95,6 @@ function CustomDrawerContent({ navigation }) {
     isAdmin,
     isItemExpanded,
     toggleExpand,
-    toggleUserType
   } = useDrawerNavigation();
 
   // Render a navigation item based on its kind
@@ -128,11 +127,6 @@ function CustomDrawerContent({ navigation }) {
       {/* Logo and user type toggle */}
       <Block style={styles.header}>
         <Image source={Images.Logo} style={styles.logo} />
-        <TouchableOpacity onPress={toggleUserType} style={styles.toggleButton}>
-          <Text style={styles.toggleText}>
-            {isAdmin ? "Switch to User View" : "Switch to Admin View"}
-          </Text>
-        </TouchableOpacity>
       </Block>
 
       {/* Navigation items */}

@@ -2,68 +2,105 @@ import React from "react";
 import { StyleSheet, TouchableOpacity, Linking } from "react-native";
 import { Block, Text, theme } from "galio-framework";
 
-import Icon from "./Icon";
+import IconExtra from "./Icon";
 import argonTheme from "../constants/Theme";
 
 class DrawerItem extends React.Component {
   renderIcon = () => {
     const { title, focused } = this.props;
-
+    
+    // Map each menu item to the corresponding Material icon
     switch (title) {
       case "Home":
         return (
-          <Icon
-            name="shop"
-            family="ArgonExtra"
-            size={14}
+          <IconExtra
+            name="home"
+            family="MaterialIcons"
+            size={22}
             color={focused ? "white" : argonTheme.COLORS.PRIMARY}
           />
         );
-      case "Elements":
+      case "Modules Management":
         return (
-          <Icon
-            name="map-big"
-            family="ArgonExtra"
-            size={14}
-            color={focused ? "white" : argonTheme.COLORS.ERROR}
-          />
-        );
-      case "Articles":
-        return (
-          <Icon
-            name="spaceship"
-            family="ArgonExtra"
-            size={14}
+          <IconExtra
+            name="dashboard"
+            family="MaterialIcons" 
+            size={22}
             color={focused ? "white" : argonTheme.COLORS.PRIMARY}
           />
         );
-      case "Profile":
+      case "Solar Energy":
         return (
-          <Icon
-            name="chart-pie-35"
-            family="ArgonExtra"
-            size={14}
-            color={focused ? "white" : argonTheme.COLORS.WARNING}
+          <IconExtra
+            name="wb-sunny"
+            family="MaterialIcons"
+            size={22}
+            color={focused ? "white" : "#FFC107"}
           />
         );
-      case "Account":
+      case "Wind Energy":
         return (
-          <Icon
-            name="calendar-date"
-            family="ArgonExtra"
-            size={14}
-            color={focused ? "white" : argonTheme.COLORS.INFO}
+          <IconExtra
+            name="air"
+            family="MaterialIcons"
+            size={22}
+            color={focused ? "white" : "#03A9F4"}
           />
         );
-      case "Getting Started":
-        return (<Icon
-          name="spaceship"
-          family="ArgonExtra"
-          size={14}
-          color={focused ? "white" : "rgba(0,0,0,0.5)"}
-        />);
+      case "Geothermal":
+        return (
+          <IconExtra
+            name="local-fire-department"
+            family="MaterialIcons"
+            size={22}
+            color={focused ? "white" : "#FF5722"}
+          />
+        );
+      case "Hydropower":
+        return (
+          <IconExtra
+            name="water-drop"
+            family="MaterialIcons"
+            size={22}
+            color={focused ? "white" : "#2196F3"}
+          />
+        );
+      case "Biomass":
+        return (
+          <IconExtra
+            name="eco"
+            family="MaterialIcons"
+            size={22}
+            color={focused ? "white" : "#4CAF50"}
+          />
+        );
+      case "Analytics Dashboard":
+        return (
+          <IconExtra
+            name="bar-chart"
+            family="MaterialIcons"
+            size={22}
+            color={focused ? "white" : "#FF9800"}
+          />
+        );
+      case "Help Tickets":
+        return (
+          <IconExtra
+            name="help"
+            family="MaterialIcons"
+            size={22}
+            color={focused ? "white" : "#607D8B"}
+          />
+        );
       case "Log out":
-        return <Icon />;
+        return (
+          <IconExtra
+            name="logout"
+            family="MaterialIcons"
+            size={22}
+            color={focused ? "white" : "rgba(0,0,0,0.5)"}
+          />
+        );
       default:
         return null;
     }
@@ -71,6 +108,11 @@ class DrawerItem extends React.Component {
 
   render() {
     const { focused, title, navigation } = this.props;
+    
+    // Filter out admin view items
+    if (title === "Manage Users" || title === "Admin Console" || title === "Admin") {
+      return null;
+    }
 
     const containerStyles = [
       styles.defaultStyle,
@@ -80,13 +122,14 @@ class DrawerItem extends React.Component {
     return (
       <TouchableOpacity
         style={{ height: 60 }}
-        onPress={() =>
-          title == "Getting Started"
-            ? Linking.openURL(
-                "https://demos.creative-tim.com/argon-pro-react-native/docs/"
-              ).catch(err => console.error("An error occurred", err))
-            : navigation.navigate(title)
-        }
+        onPress={() => {
+          if (title === "Getting Started") {
+            Linking.openURL("https://demos.creative-tim.com/argon-pro-react-native/docs/")
+              .catch(err => console.error("An error occurred", err));
+          } else {
+            navigation.navigate(title);
+          }
+        }}
       >
         <Block flex row style={containerStyles}>
           <Block middle flex={0.1} style={{ marginRight: 5 }}>

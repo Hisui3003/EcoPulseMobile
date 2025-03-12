@@ -1,6 +1,6 @@
 // useDrawerNavigation.js
 import { useState } from 'react';
-import { USER_NAVIGATION, ADMIN_NAVIGATION } from './menuUtil';
+import { USER_NAVIGATION } from './menuUtil';
 
 /**
  * Custom hook for drawer navigation state management
@@ -10,10 +10,10 @@ export const useDrawerNavigation = () => {
   const [expandedItems, setExpandedItems] = useState(['modules']); // Start with modules expanded
   
   // State for user/admin view toggle
-  const [isAdmin, setIsAdmin] = useState(false);
+
   
   // Get the right navigation data based on user type
-  const navigationData = isAdmin ? ADMIN_NAVIGATION : USER_NAVIGATION;
+  const navigationData = USER_NAVIGATION;
 
   // Toggle expanded state for an item
   const toggleExpand = (segment) => {
@@ -25,9 +25,6 @@ export const useDrawerNavigation = () => {
   };
 
   // Toggle between admin and user view
-  const toggleUserType = () => {
-    setIsAdmin(!isAdmin);
-  };
 
   // Check if a navigation item is expanded
   const isItemExpanded = (segment) => {
@@ -36,10 +33,8 @@ export const useDrawerNavigation = () => {
 
   return {
     navigationData,
-    isAdmin,
     expandedItems,
     toggleExpand,
-    toggleUserType,
     isItemExpanded,
   };
 };

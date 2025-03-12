@@ -6,15 +6,21 @@ module.exports = function(api) {
       ['@babel/plugin-transform-class-properties', { loose: true }],
       ['@babel/plugin-transform-private-methods', { loose: true }],
       ['@babel/plugin-transform-private-property-in-object', { loose: true }],
-      // Add module resolver for absolute imports
+      // Module resolver for absolute imports - updated paths
       [
         'module-resolver',
         {
-          root: ['.'],
+          root: ['./src'],
+          extensions: ['.js', '.jsx', '.ts', '.tsx'],
           alias: {
-            '@components': './components',
-            '@hooks': './hooks',
-            '@shared': './shared'
+            '@components': './src/components',
+            '@hooks': './src/hooks',
+            '@screens': './src/screens',
+            '@store': './src/store',
+            '@utils': './src/utils',
+            '@assets': './src/assets',
+            '@shared': './src/shared',
+            '@api': './src/api'
           },
         },
       ],
