@@ -32,6 +32,8 @@ import RecommendationsScreen from "../screens/Recommendations/Recommendations";
 // import HelpSupportScreen from "../screens/HelpSupport";
 
 import Login from "../screens/Login";
+import Ticket from "../screens/SubmitTicket";
+import { Picker } from '@react-native-picker/picker';
 
 const { width } = Dimensions.get("screen");
 
@@ -144,8 +146,7 @@ function ModulesStack(props) {
             <Header title="Wind Energy" navigation={navigation} scene={scene} />
           ),
           cardStyle: { backgroundColor: "#F8F9FE" },
-        }}
-      /> */}
+        }} */}
       <Stack.Screen
         name="SolarEnergy"
         component={SolarScreen}
@@ -504,6 +505,13 @@ function AppStack(props) {
       <Drawer.Screen
         name="Profile"
         component={ProfileStack}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
+        name="SubmitTicket"
+        component={Ticket}
         options={{
           headerShown: false,
         }}

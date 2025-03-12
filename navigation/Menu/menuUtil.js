@@ -105,6 +105,13 @@ export const USER_NAVIGATION = [
   },
   {
     kind: 'item',
+    segment: 'submit-a-ticket',
+    title: 'Submit a Ticket',
+    iconName: 'ticket',
+    path: 'SubmitTicket',
+  },
+  {
+    kind: 'item',
     segment: 'help-support',
     title: 'Help & Support',
     iconName: 'help',
