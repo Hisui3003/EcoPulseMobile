@@ -9,14 +9,11 @@ import {
   ScrollView,
   SafeAreaView,
   Animated,
-  Dimensions,
   KeyboardAvoidingView,
   Platform
 } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-
-const { width } = Dimensions.get('window');
 
 const SupportScreen = ({ navigation }) => {
   const [subject, setSubject] = useState('');
@@ -188,7 +185,7 @@ const SupportScreen = ({ navigation }) => {
                     <MaterialIcons 
                       name="question-answer" 
                       size={20} 
-                      color="#1a73e8" 
+                      color="#4CAF50" 
                       style={styles.questionIcon}
                     />
                     <Text style={styles.question}>{faqItem.question}</Text>
@@ -222,22 +219,22 @@ const SupportScreen = ({ navigation }) => {
           
           <View style={styles.supportInfoContent}>
             <View style={styles.supportInfoItem}>
-              <MaterialIcons name="email" size={20} color="#1a73e8" />
+              <MaterialIcons name="email" size={20} color="#4CAF50" />
               <Text style={styles.supportInfoText}>eco-plus-support@gmail.com</Text>
             </View>
             
             <View style={styles.supportInfoItem}>
-              <MaterialIcons name="phone" size={20} color="#1a73e8" />
+              <MaterialIcons name="phone" size={20} color="#4CAF50" />
               <Text style={styles.supportInfoText}>+1 (555) 123-4567</Text>
             </View>
             
             <View style={styles.supportInfoItem}>
-              <MaterialIcons name="chat" size={20} color="#1a73e8" />
+              <MaterialIcons name="chat" size={20} color="#4CAF50" />
               <Text style={styles.supportInfoText}>Live Chat: Available 24/7</Text>
             </View>
             
             <View style={styles.supportInfoItem}>
-              <MaterialIcons name="access-time" size={20} color="#1a73e8" />
+              <MaterialIcons name="access-time" size={20} color="#4CAF50" />
               <Text style={styles.supportInfoText}>Response Time: Within 24 hours</Text>
             </View>
           </View>
@@ -390,14 +387,6 @@ const SupportScreen = ({ navigation }) => {
           </View>
           
           <TouchableOpacity 
-            style={styles.uploadButton}
-            activeOpacity={0.8}
-          >
-            <MaterialIcons name="attach-file" size={20} color="#fff" />
-            <Text style={styles.uploadButtonText}>Attach Screenshots</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity 
             style={styles.submitButton}
             onPress={handleSubmit}
             activeOpacity={0.8}
@@ -426,7 +415,7 @@ const SupportScreen = ({ navigation }) => {
         </TouchableOpacity>
         
         <View style={styles.headerTitleContainer}>
-          <MaterialIcons name="support" size={24} color="#1a73e8" />
+          <MaterialIcons name="support" size={24} color="#4CAF50" />
           <Text style={styles.headerTitle}>Support Center</Text>
         </View>
         
@@ -444,7 +433,7 @@ const SupportScreen = ({ navigation }) => {
           <MaterialIcons 
             name="question-answer" 
             size={20} 
-            color={activePanel === 'faq' ? "#1a73e8" : "#757575"} 
+            color={activePanel === 'faq' ? "#4CAF50" : "#757575"} 
           />
           <Text style={[styles.tabText, activePanel === 'faq' && styles.activeTabText]}>
             FAQ
@@ -458,7 +447,7 @@ const SupportScreen = ({ navigation }) => {
           <MaterialIcons 
             name="create" 
             size={20} 
-            color={activePanel === 'submit' ? "#1a73e8" : "#757575"} 
+            color={activePanel === 'submit' ? "#4CAF50" : "#757575"} 
           />
           <Text style={[styles.tabText, activePanel === 'submit' && styles.activeTabText]}>
             Submit Ticket
@@ -476,6 +465,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f7f9fc',
+    marginTop: 10, // Added top margin to prevent overlap
   },
   headerContainer: {
     flexDirection: 'row',
@@ -491,6 +481,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
+    marginTop: 5, // Added top margin to header
   },
   backButton: {
     padding: 8,
@@ -527,7 +518,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   activeTab: {
-    backgroundColor: '#e8f0fe',
+    backgroundColor: '#e8f5e9', // Lighter green background
   },
   tabText: {
     fontSize: 15,
@@ -536,7 +527,7 @@ const styles = StyleSheet.create({
     marginLeft: 6,
   },
   activeTabText: {
-    color: '#1a73e8',
+    color: '#4CAF50', // Green color
   },
   panel: {
     flex: 1,
@@ -561,7 +552,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
-    backgroundColor: '#1a73e8',
+    backgroundColor: '#4CAF50', // Green color
   },
   sectionTitle: {
     fontSize: 16,
@@ -621,7 +612,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
-    backgroundColor: '#34495e',
+    backgroundColor: '#388E3C', // Darker green
   },
   supportInfoTitle: {
     fontSize: 16,
@@ -724,7 +715,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   selectedDropdownText: {
-    color: '#1a73e8',
+    color: '#4CAF50', // Green color
     fontWeight: '500',
   },
   priorityIndicator: {
@@ -747,21 +738,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#333',
   },
-  uploadButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#757575',
-    borderRadius: 8,
-    paddingVertical: 12,
-    marginBottom: 20,
-  },
-  uploadButtonText: {
-    fontSize: 15,
-    fontWeight: '500',
-    color: '#fff',
-    marginLeft: 8,
-  },
   submitButton: {
     borderRadius: 8,
     marginBottom: 30,
@@ -771,7 +747,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    backgroundColor: '#1a73e8',
+    backgroundColor: '#4CAF50', // Green color
   },
   submitButtonInner: {
     flexDirection: 'row',
