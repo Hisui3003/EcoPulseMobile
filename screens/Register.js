@@ -1,215 +1,327 @@
-import React from "react";
-import {
-  StyleSheet,
+import React, { useState, useEffect } from "react";
+import { 
+  View, 
+  Text, 
+  TextInput, 
+  TouchableOpacity, 
+  StyleSheet, 
+  StatusBar, 
   ImageBackground,
+  Animated,
   Dimensions,
-  StatusBar,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard
 } from "react-native";
-import { Block, Checkbox, Text, theme } from "galio-framework";
+import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 
-import { Button, Icon, Input } from "../components";
-import { Images, argonTheme } from "../constants";
+const { width, height } = Dimensions.get('window');
 
-const { width, height } = Dimensions.get("screen");
+const Register = ({ navigation }) => {
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [fadeAnim] = useState(new Animated.Value(0));
+  const [slideAnim] = useState(new Animated.Value(30));
 
-class Register extends React.Component {
-  render() {
-    return (
-      <Block flex middle>
-        <StatusBar hidden />
-        <ImageBackground
-          source={Images.RegisterBackground}
-          style={{ width, height, zIndex: 1 }}
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 800,
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 600,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
+
+  const handleRegister = () => {
+    // Handle registration logic here
+    console.log("Register with:", { fullName, email, password });
+  };
+
+  return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <ImageBackground
+        source={require('../assets/login-bg.png')}
+        style={styles.backgroundImage}
+        imageStyle={styles.backgroundImageStyle}
+      >
+        <StatusBar translucent backgroundColor="transparent" />
+        
+        {/* Overlay gradient for better text readability */}
+        <LinearGradient
+          colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.3)']}
+          style={styles.gradient}
+        />
+        
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={styles.container}
         >
-          <Block safe flex middle>
-            <Block style={styles.registerContainer}>
-              <Block flex={0.25} middle style={styles.socialConnect}>
-                <Text color="#8898AA" size={12}>
-                  Sign up with
-                </Text>
-                <Block row style={{ marginTop: theme.SIZES.BASE }}>
-                  <Button style={{ ...styles.socialButtons, marginRight: 30 }}>
-                    <Block row>
-                      <Icon
-                        name="logo-github"
-                        family="Ionicon"
-                        size={14}
-                        color={"black"}
-                        style={{ marginTop: 2, marginRight: 5 }}
-                      />
-                      <Text style={styles.socialTextButtons}>GITHUB</Text>
-                    </Block>
-                  </Button>
-                  <Button style={styles.socialButtons}>
-                    <Block row>
-                      <Icon
-                        name="logo-google"
-                        family="Ionicon"
-                        size={14}
-                        color={"black"}
-                        style={{ marginTop: 2, marginRight: 5 }}
-                      />
-                      <Text style={styles.socialTextButtons}>GOOGLE</Text>
-                    </Block>
-                  </Button>
-                </Block>
-              </Block>
-              <Block flex>
-                <Block flex={0.17} middle>
-                  <Text color="#8898AA" size={12}>
-                    Or sign up the classic way
-                  </Text>
-                </Block>
-                <Block flex center>
-                  <KeyboardAvoidingView
-                    style={{ flex: 1 }}
-                    behavior="padding"
-                    enabled
-                  >
-                    <Block width={width * 0.8} style={{ marginBottom: 15 }}>
-                      <Input
-                        borderless
-                        placeholder="Name"
-                        iconContent={
-                          <Icon
-                            size={16}
-                            color={argonTheme.COLORS.ICON}
-                            name="hat-3"
-                            family="ArgonExtra"
-                            style={styles.inputIcons}
-                          />
-                        }
-                      />
-                    </Block>
-                    <Block width={width * 0.8} style={{ marginBottom: 15 }}>
-                      <Input
-                        borderless
-                        placeholder="Email"
-                        iconContent={
-                          <Icon
-                            size={16}
-                            color={argonTheme.COLORS.ICON}
-                            name="ic_mail_24px"
-                            family="ArgonExtra"
-                            style={styles.inputIcons}
-                          />
-                        }
-                      />
-                    </Block>
-                    <Block width={width * 0.8}>
-                      <Input
-                        password
-                        borderless
-                        placeholder="Password"
-                        iconContent={
-                          <Icon
-                            size={16}
-                            color={argonTheme.COLORS.ICON}
-                            name="padlock-unlocked"
-                            family="ArgonExtra"
-                            style={styles.inputIcons}
-                          />
-                        }
-                      />
-                      <Block row style={styles.passwordCheck}>
-                        <Text size={12} color={argonTheme.COLORS.MUTED}>
-                          password strength:
-                        </Text>
-                        <Text bold size={12} color={argonTheme.COLORS.SUCCESS}>
-                          {" "}
-                          strong
-                        </Text>
-                      </Block>
-                    </Block>
-                    <Block row width={width * 0.75}>
-                      <Checkbox
-                        checkboxStyle={{
-                          borderWidth: 3
-                        }}
-                        color={argonTheme.COLORS.PRIMARY}
-                        label="I agree with the"
-                      />
-                      <Button
-                        style={{ width: 100 }}
-                        color="transparent"
-                        textStyle={{
-                          color: argonTheme.COLORS.PRIMARY,
-                          fontSize: 14
-                        }}
-                      >
-                        Privacy Policy
-                      </Button>
-                    </Block>
-                    <Block middle>
-                      <Button color="primary" style={styles.createButton}>
-                        <Text bold size={14} color={argonTheme.COLORS.WHITE}>
-                          CREATE ACCOUNT
-                        </Text>
-                      </Button>
-                    </Block>
-                  </KeyboardAvoidingView>
-                </Block>
-              </Block>
-            </Block>
-          </Block>
-        </ImageBackground>
-      </Block>
-    );
-  }
-}
+          <Animated.View 
+            style={[
+              styles.panel,
+              {
+                opacity: fadeAnim,
+                transform: [{ translateY: slideAnim }]
+              }
+            ]}
+          >
+            <View style={styles.iconContainer}>
+              <Ionicons name="person-add" size={80} color="#4CAF50" />
+            </View>
+            
+            <Text style={styles.title}>Create Account</Text>
+            
+            <View style={styles.inputContainer}>
+              <Ionicons name="person" size={20} color="#525F7F" style={styles.inputIcon} />
+              <TextInput
+                style={styles.input}
+                placeholder="Full Name"
+                value={fullName}
+                onChangeText={setFullName}
+                placeholderTextColor="#A0A0A0"
+                autoCapitalize="words"
+              />
+            </View>
+            
+            <View style={styles.inputContainer}>
+              <Ionicons name="mail" size={20} color="#525F7F" style={styles.inputIcon} />
+              <TextInput
+                style={styles.input}
+                placeholder="Email Address"
+                value={email}
+                onChangeText={setEmail}
+                placeholderTextColor="#A0A0A0"
+                autoCapitalize="none"
+                keyboardType="email-address"
+              />
+            </View>
+            
+            <View style={styles.inputContainer}>
+              <Ionicons name="lock-closed" size={20} color="#525F7F" style={styles.inputIcon} />
+              <TextInput
+                style={styles.input}
+                placeholder="Password"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
+                placeholderTextColor="#A0A0A0"
+              />
+            </View>
+            
+            <View style={styles.termsContainer}>
+              <TouchableOpacity style={styles.checkbox}>
+                <Ionicons 
+                  name="checkmark-circle" 
+                  size={20} 
+                  color="#4CAF50" 
+                />
+              </TouchableOpacity>
+              <Text style={styles.termsText}>
+                I agree to the <Text style={styles.termsLink}>Terms & Conditions</Text>
+              </Text>
+            </View>
+            
+            <TouchableOpacity style={styles.button} onPress={handleRegister}>
+              <LinearGradient
+                colors={['#4CAF50', '#3E9142']}
+                start={[0, 0]}
+                end={[1, 0]}
+                style={styles.buttonGradient}
+              >
+                <Text style={styles.buttonText}>Create Account</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+            
+            <Text style={styles.orText}>Or register with</Text>
+            
+            <TouchableOpacity style={styles.googleButton}>
+              <View style={styles.googleIconContainer}>
+                <Ionicons name="logo-google" size={18} color="#4CAF50" />
+              </View>
+              <Text style={styles.googleButtonText}>Sign up with Google</Text>
+            </TouchableOpacity>
+            
+            <View style={styles.loginContainer}>
+              <Text style={styles.loginText}>Already have an account? </Text>
+              <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                <Text style={styles.loginLink}>Login</Text>
+              </TouchableOpacity>
+            </View>
+          </Animated.View>
+        </KeyboardAvoidingView>
+      </ImageBackground>
+    </TouchableWithoutFeedback>
+  );
+};
 
 const styles = StyleSheet.create({
-  registerContainer: {
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    width: '100%',
+  },
+  backgroundImage: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  backgroundImageStyle: {
+    resizeMode: 'cover',
+  },
+  gradient: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height: height,
+  },
+  panel: {
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    padding: 30,
+    borderRadius: 16,
+    alignItems: 'center',
     width: width * 0.9,
-    height: height * 0.875,
-    backgroundColor: "#F4F5F7",
-    borderRadius: 4,
-    shadowColor: argonTheme.COLORS.BLACK,
+    maxWidth: 400,
+    alignSelf: 'center',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 4
+      height: 10,
     },
-    shadowRadius: 8,
-    shadowOpacity: 0.1,
-    elevation: 1,
-    overflow: "hidden"
+    shadowOpacity: 0.15,
+    shadowRadius: 20,
+    elevation: 10,
   },
-  socialConnect: {
-    backgroundColor: argonTheme.COLORS.WHITE,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: "#8898AA"
+  iconContainer: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(76, 175, 80, 0.1)',
+    marginBottom: 20,
   },
-  socialButtons: {
-    width: 120,
-    height: 40,
-    backgroundColor: "#fff",
-    shadowColor: argonTheme.COLORS.BLACK,
+  title: {
+    fontSize: 28,
+    fontWeight: "bold",
+    marginBottom: 30,
+    color: "#333",
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    backgroundColor: '#F8F9FB',
+    borderRadius: 12,
+    paddingHorizontal: 15,
+    marginBottom: 16,
+    height: 56,
+    borderWidth: 1,
+    borderColor: '#EAEEF2',
+  },
+  inputIcon: {
+    marginRight: 12,
+  },
+  input: {
+    flex: 1,
+    height: '100%',
+    fontSize: 16,
+    color: '#333',
+  },
+  termsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 24,
+    alignSelf: 'flex-start',
+  },
+  checkbox: {
+    marginRight: 8,
+  },
+  termsText: {
+    fontSize: 14,
+    color: '#525F7F',
+  },
+  termsLink: {
+    color: '#4CAF50',
+    fontWeight: '600',
+  },
+  button: {
+    width: '100%',
+    height: 56,
+    borderRadius: 12,
+    overflow: 'hidden',
+    marginBottom: 24,
+    shadowColor: "#4CAF50",
     shadowOffset: {
       width: 0,
-      height: 4
+      height: 4,
     },
+    shadowOpacity: 0.2,
     shadowRadius: 8,
-    shadowOpacity: 0.1,
-    elevation: 1
+    elevation: 5,
   },
-  socialTextButtons: {
-    color: argonTheme.COLORS.PRIMARY,
-    fontWeight: "800",
-    fontSize: 14
+  buttonGradient: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  inputIcons: {
-    marginRight: 12
+  buttonText: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
   },
-  passwordCheck: {
-    paddingLeft: 15,
-    paddingTop: 13,
-    paddingBottom: 30
+  orText: {
+    marginVertical: 16,
+    color: '#999',
+    fontWeight: '500',
   },
-  createButton: {
-    width: width * 0.5,
-    marginTop: 25
-  }
+  googleButton: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFF',
+    paddingVertical: 14,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    marginBottom: 24,
+    width: '100%',
+  },
+  googleIconContainer: {
+    width: 24,
+    height: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 10,
+  },
+  googleButtonText: {
+    color: '#525F7F',
+    fontWeight: '600',
+    fontSize: 16,
+  },
+  loginContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  loginText: {
+    color: '#525F7F',
+    fontSize: 15,
+  },
+  loginLink: {
+    color: '#4CAF50',
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
 });
 
 export default Register;
