@@ -5,7 +5,11 @@ import * as Font from "expo-font";
 import { Asset } from "expo-asset";
 import { NavigationContainer } from "@react-navigation/native";
 import { GalioProvider } from "galio-framework"; // Keep galio for now since it might be used in other components
-
+// Suppress specific warnings
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs([
+  'Support for defaultProps will be removed from function components',
+]);
 // Before rendering any navigation stack
 import { enableScreens } from "react-native-screens";
 enableScreens();
@@ -17,6 +21,7 @@ import { argonTheme } from "./constants";
 
 // Keep expo-splash-screen visible while loading resources
 SplashScreen.preventAutoHideAsync();
+
 
 // Image assets to preload - use require instead of referencing Images object
 const assetImages = [

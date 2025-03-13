@@ -109,68 +109,6 @@ function Header(props) {
     }
   }
   
-  const renderSearch = () => {
-    return (
-      <Input
-        right
-        color="black"
-        style={styles.search}
-        placeholder="What are you looking for?"
-        placeholderTextColor={'#8898AA'}
-        onFocus={() => navigation.navigate('Pro')}
-        iconContent={<Icon size={16} color={theme.COLORS.MUTED} name="search-zoom-in" family="ArgonExtra" />}
-      />
-    );
-  }
-  
-  const renderOptions = () => {
-    const { optionLeft, optionRight } = props;
-
-    return (
-      <Block row style={styles.options}>
-        <Button shadowless style={[styles.tab, styles.divider]} onPress={() => navigation.navigate('Pro')}>
-          <Block row middle>
-            <Icon name="diamond" family="ArgonExtra" style={{ paddingRight: 8 }} color={argonTheme.COLORS.ICON} />
-            <Text size={16} style={styles.tabTitle}>{optionLeft || 'Articles'}</Text>
-          </Block>
-        </Button>
-        <Button shadowless style={styles.tab} onPress={() => navigation.navigate('Pro')}>
-          <Block row middle>
-            <Icon size={16} name="bag-17" family="ArgonExtra" style={{ paddingRight: 8 }} color={argonTheme.COLORS.ICON}/>
-            <Text size={16} style={styles.tabTitle}>{optionRight || 'Contact'}</Text>
-          </Block>
-        </Button>
-      </Block>
-    );
-  }
-  
-  const renderTabs = () => {
-    const { tabs, tabIndex } = props;
-    const defaultTab = tabs && tabs[0] && tabs[0].id;
-    
-    if (!tabs) return null;
-
-    return (
-      <Tabs
-        data={tabs || []}
-        initialIndex={tabIndex || defaultTab}
-        onChange={id => navigation.setParams({ tabId: id })} />
-    )
-  }
-  
-  const renderHeader = () => {
-    const { search, options, tabs } = props;
-    if (search || tabs || options) {
-      return (
-        <Block center>
-          {search ? renderSearch() : null}
-          {options ? renderOptions() : null}
-          {tabs ? renderTabs() : null}
-        </Block>
-      );
-    }
-  }
-  
   const { back, title, white, transparent, bgColor, iconColor, titleColor, ...restProps } = props;
 
   const noShadow = ['Search', 'Categories', 'Deals', 'Pro', 'Profile'].includes(title);
@@ -210,7 +148,7 @@ function Header(props) {
         ]}
         {...restProps}
       />
-      {renderHeader()}
+      {/* The following section was causing duplicate headers - now removed */}
     </Block>
   );
 }

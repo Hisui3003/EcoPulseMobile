@@ -29,7 +29,7 @@ import BiomassScreen from "../features/modules/components/Biomass/Biomass";
 // Import energy sharing screen
 import EnergySharingScreen from "../screens/index";
 import RecommendationsScreen from "../screens/Recommendations/Recommendations";
-// import HelpSupportScreen from "../screens/HelpSupport";
+import HelpSupportScreen from "../screens/SubmitTicket";
 
 import Login from "../screens/Login";
 
@@ -136,16 +136,6 @@ function ModulesStack(props) {
         headerShown: true,
       }}
     >
-      {/* <Stack.Screen
-        name="WindEnergy"
-        component={WindScreen}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header title="Wind Energy" navigation={navigation} scene={scene} />
-          ),
-          cardStyle: { backgroundColor: "#F8F9FE" },
-        }}
-      /> */}
       <Stack.Screen
         name="SolarEnergy"
         component={SolarScreen}
@@ -156,36 +146,6 @@ function ModulesStack(props) {
           cardStyle: { backgroundColor: "#F8F9FE" },
         }}
       />
-      {/* <Stack.Screen
-        name="GeothermalEnergy"
-        component={GeothermalScreen}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header title="Geothermal Energy" navigation={navigation} scene={scene} />
-          ),
-          cardStyle: { backgroundColor: "#F8F9FE" },
-        }}
-      />
-      <Stack.Screen
-        name="HydropowerEnergy"
-        component={HydropowerScreen}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header title="Hydropower" navigation={navigation} scene={scene} />
-          ),
-          cardStyle: { backgroundColor: "#F8F9FE" },
-        }}
-      />
-      <Stack.Screen
-        name="BiomassEnergy"
-        component={BiomassScreen}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header title="Biomass Energy" navigation={navigation} scene={scene} />
-          ),
-          cardStyle: { backgroundColor: "#F8F9FE" },
-        }}
-      /> */}
     </Stack.Navigator>
   );
 }
@@ -241,19 +201,12 @@ function HelpSupportStack(props) {
   return (
     <Stack.Navigator
       screenOptions={{
-        mode: "card",
-        headerShown: true,
+        headerShown: false,  // Changed from true to false to hide the header
       }}
     >
       <Stack.Screen
         name="HelpSupport"
         component={HelpSupportScreen}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header title="Help & Support" navigation={navigation} scene={scene} />
-          ),
-          cardStyle: { backgroundColor: "#F8F9FE" },
-        }}
       />
     </Stack.Navigator>
   );
@@ -389,22 +342,14 @@ function HomeStack(props) {
     <Stack.Navigator
       screenOptions={{
         mode: "card",
-        headerShown: "screen",
+        headerShown: false, // This completely disables the navigation header
       }}
     >
       <Stack.Screen
         name="Home"
         component={Home}
         options={{
-          header: ({ navigation, scene }) => (
-            <Header
-              title="Home"
-              search
-              options
-              navigation={navigation}
-              scene={scene}
-            />
-          ),
+          // No header configuration here
           cardStyle: { backgroundColor: "#F8F9FE" },
         }}
       />
@@ -570,8 +515,6 @@ function AppStack(props) {
           headerShown: false,
         }}
       />
-
-
 
       <Drawer.Screen
         name="EnergySharing"

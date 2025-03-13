@@ -1,5 +1,6 @@
-// EnergyRecommendations.jsx
-import React from "react";
+// EnergyRecommendations.jsx - FIXED VERSION
+import React, { useRef, useEffect } from "react";
+
 import {
   View,
   Text,
@@ -9,7 +10,8 @@ import {
   TextInput,
   ScrollView,
   FlatList,
-  Modal
+  Modal,
+  Alert
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useSingleYearPicker } from "../../components";
@@ -20,30 +22,25 @@ import styles from './styles';
 
 // Future Projections Card Component
 const FutureProjectionsCard = ({ solarRecommendations }) => {
-  if (!solarRecommendations) return null;
-  
+  if (!solarRecommendations?.future_projections) return null;
+
   const { future_projections } = solarRecommendations;
-  
+
   return (
     <View style={styles.projectionsCard}>
       <View>
         <Text style={styles.projectionYearText}>{future_projections.year}</Text>
-        <Text style={styles.projectionTitle}>Solar Investment Projections</Text>
-        
+        <Text style={styles.projectionTitle}>{future_projections.title}</Text>
+
         <View style={styles.projectionDetails}>
-          <Text style={styles.projectionDetailText}>
-            Predicted MERALCO Rate:{' '}
-            <Text style={styles.projectionDetailValue}>
-              {future_projections['Predicted MERALCO Rate']}
-            </Text>
-          </Text>
-          
-          <Text style={styles.projectionDetailText}>
-            Installable Solar Capacity:{' '}
-            <Text style={styles.projectionDetailValue}>
-              {future_projections['Installable Solar Capacity']}
-            </Text>
-          </Text>
+          {Object.entries(future_projections)
+            .filter(([key]) => !['year', 'title'].includes(key))
+            .map(([key, value]) => (
+              <Text key={key} style={styles.projectionDetailText}>
+                {key}:{' '}
+                <Text style={styles.projectionDetailValue}>{value}</Text>
+              </Text>
+            ))}
         </View>
       </View>
     </View>
@@ -52,6 +49,7 @@ const FutureProjectionsCard = ({ solarRecommendations }) => {
 
 const EnergyRecommendations = () => {
   // Use the recommendations hook for data and functionality
+  const budgetUpdateTimeout = useRef(null);
   const {
     cityData,
     solarRecommendations,
@@ -63,7 +61,10 @@ const EnergyRecommendations = () => {
     isLoading,
     setIsLoading,
     forceRefresh,
-    fetchSolarRecommendations
+    fetchSolarRecommendations,
+    tempBudget,
+    setTempBudget,
+    handleBudgetSubmit
   } = useRecommendations();
 
   // Use the SingleYearPicker hook for year selection
@@ -81,21 +82,56 @@ const EnergyRecommendations = () => {
     }
   });
 
-  // Handle budget change with minimum value of 15,000
+  // FIX 1: Handle budget change without triggering API calls
   const handleBudgetChange = (value) => {
-    if (/^\d*$/.test(value)) {
-      const numericValue = parseInt(value, 10);
-      if (!isNaN(numericValue) && numericValue >= 15000 || value === '') {
-        const validBudget = value === '' ? 15000 : numericValue;
-        setBudget(validBudget);
-        
-        // Force data refresh with the new budget value
-        setTimeout(() => {
-          fetchSolarRecommendations();
-        }, 300);
-      }
+    // Allow empty input for clearing
+    if (value === '') {
+      setTempBudget('');
+      return;
+    }
+
+    // Check if input is numeric
+    if (/^\d+$/.test(value)) {
+      // Only update the tempBudget while typing - no API calls!
+      setTempBudget(value);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      if (budgetUpdateTimeout.current) {
+        clearTimeout(budgetUpdateTimeout.current);
+      }
+    };
+  }, []);
+
+  // FIX 2: Update the year picker onPress handler
+  const handleYearSelect = (selectedYear) => {
+    // Close picker first
+    togglePicker();
+
+    // Update values
+    handleYearPickerChange(selectedYear);
+    setSelectedYear(selectedYear);
+
+    // Fetch new data immediately
+    setIsLoading(true);
+    
+    // Clear any existing timeout
+    if (budgetUpdateTimeout.current) {
+      clearTimeout(budgetUpdateTimeout.current);
+    }
+
+    // Fetch recommendations immediately without timeout
+    fetchSolarRecommendations();
+  };
+
+  // Calculate end year for year picker (2050)
+  const currentYear = new Date().getFullYear();
+  const yearRange = Array.from(
+    { length: 2050 - currentYear + 1 }, 
+    (_, i) => currentYear + i
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -103,9 +139,9 @@ const EnergyRecommendations = () => {
       <View style={styles.header}>
         <View style={styles.headerTitleContainer}>
           <Text style={styles.headerTitle}>Energy Recommendations</Text>
-          <Ionicons name="sunny" size={18} color="#E0F2F1" style={{marginLeft: 4}} />
+          <Ionicons name="sunny" size={18} color="#E0F2F1" style={{ marginLeft: 4 }} />
         </View>
-        
+
         <TouchableOpacity
           style={styles.pdfButton}
           onPress={handleDownloadPDF}
@@ -124,36 +160,47 @@ const EnergyRecommendations = () => {
             <View style={styles.budgetInputContainer}>
               <Text style={styles.currencyPrefix}>₱</Text>
               <TextInput
-                style={styles.budgetInput}
-                value={budget ? budget.toString() : ''}
+                style={[
+                  styles.budgetInput,
+                  isLoading && styles.disabledInput
+                ]}
+                value={tempBudget}
                 onChangeText={handleBudgetChange}
+                onSubmitEditing={handleBudgetSubmit}
                 keyboardType="numeric"
                 placeholder="Enter Budget"
-                onSubmitEditing={() => {
-                  // Force refresh when user submits
-                  fetchSolarRecommendations();
-                }}
+                editable={!isLoading}
+                returnKeyType="done"
               />
             </View>
             <Text style={styles.helperText}>Minimum: ₱15,000</Text>
           </View>
-          
+
           <View style={styles.inputGroup}>
             <Text style={styles.inputLabel}>Year</Text>
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.yearPickerButton}
               onPress={togglePicker}
+              disabled={isLoading}
             >
-              <Text style={styles.yearPickerButtonText}>{yearPickerValue.year()}</Text>
-              <Ionicons name="calendar-outline" size={20} color="#64748B" style={{marginLeft: 8}} />
+              <Text style={styles.yearPickerButtonText}>
+                {yearPickerValue.year()}
+              </Text>
+              <Ionicons
+                name="calendar-outline"
+                size={20}
+                color="#64748B"
+                style={{ marginLeft: 8 }}
+              />
             </TouchableOpacity>
           </View>
-          
-          <TouchableOpacity 
+
+          <TouchableOpacity
             style={styles.refreshButton}
             onPress={() => {
               forceRefresh();
             }}
+            disabled={isLoading}
           >
             <Ionicons name="refresh" size={20} color="#FFF" />
           </TouchableOpacity>
@@ -161,9 +208,9 @@ const EnergyRecommendations = () => {
 
         {/* Energy Potential Section */}
         <Text style={styles.sectionTitle}>Renewable Energy Potential</Text>
-        
+
         <View style={styles.potentialCard}>
-          <View style={styles.solarHeader}></View>
+          <View style={styles.solarHeader} />
           <View style={styles.potentialContent}>
             <View style={styles.potentialIconContainer}>
               <Ionicons name="sunny" size={24} color="#FF9800" />
@@ -171,10 +218,11 @@ const EnergyRecommendations = () => {
             <View style={styles.potentialInfo}>
               <Text style={styles.potentialTitle}>Solar</Text>
               <Text style={styles.potentialValue}>
-                Potential: High
+                Potential: {cityData?.location?.solarPotential || 'High'}
               </Text>
               <Text style={styles.potentialDetails}>
-                Average 5.5 kWh/m²/day
+                {solarRecommendations?.future_projections?.['Installable Solar Capacity'] ||
+                  'Average 5.5 kWh/m²/day'}
               </Text>
             </View>
           </View>
@@ -182,7 +230,7 @@ const EnergyRecommendations = () => {
 
         {/* Future Projections Section */}
         <Text style={styles.sectionTitle}>Future Projections</Text>
-        
+
         {solarRecommendations ? (
           <FutureProjectionsCard solarRecommendations={solarRecommendations} />
         ) : (
@@ -194,16 +242,25 @@ const EnergyRecommendations = () => {
 
         {/* Cost-Benefit Analysis Section */}
         <Text style={styles.sectionTitle}>Cost-Benefit Analysis</Text>
-        
-        {solarRecommendations ? (
+
+        {solarRecommendations?.cost_benefit_analysis ? (
           <View style={styles.costBenefitGrid}>
             {solarRecommendations.cost_benefit_analysis.map((item, index) => (
               <View key={index} style={styles.costBenefitCard}>
                 <Text style={styles.costBenefitLabel}>{item.label}</Text>
                 <View style={styles.costBenefitValueContainer}>
-                  <Ionicons name={getIconName(item.icon)} size={20} color="#209652" />
-                  <Text style={styles.costBenefitValue}>{item.value}</Text>
+                  <Ionicons
+                    name={getIconName(item.icon)}
+                    size={20}
+                    color="#209652"
+                  />
+                  <Text style={styles.costBenefitValue}>
+                    {item.value}
+                  </Text>
                 </View>
+                <Text style={styles.costBenefitDescription}>
+                  {item.description}
+                </Text>
               </View>
             ))}
           </View>
@@ -214,7 +271,7 @@ const EnergyRecommendations = () => {
           </View>
         )}
       </ScrollView>
-      
+
       {/* Loading Overlay */}
       {isLoading && (
         <View style={styles.loadingOverlay}>
@@ -224,46 +281,42 @@ const EnergyRecommendations = () => {
           </View>
         </View>
       )}
-      
-      {/* Year Picker Modal */}
+
+      {/* Year Picker Modal - FIXED to show years until 2050 */}
       <Modal
         visible={showPicker}
         transparent={true}
         animationType="slide"
         onRequestClose={togglePicker}
       >
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.modalOverlay}
           activeOpacity={1}
           onPress={togglePicker}
         >
           <View style={styles.modalContent}>
-            <View style={styles.modalHeader}>
+            <View style={styles.modalHeader} onStartShouldSetResponder={() => true}>
               <Text style={styles.modalTitle}>Select Year</Text>
               <TouchableOpacity onPress={togglePicker}>
                 <Ionicons name="close" size={24} color="#4A5568" />
               </TouchableOpacity>
             </View>
             <FlatList
-              data={Array.from({length: 10}, (_, i) => new Date().getFullYear() + i)}
+              data={yearRange}
               keyExtractor={(item) => item.toString()}
               renderItem={({ item }) => (
                 <TouchableOpacity
                   style={[
                     styles.yearItem,
-                    item === yearPickerValue.year() && styles.selectedYearItem
+                    item === yearPickerValue.year() &&
+                    styles.selectedYearItem
                   ]}
-                  onPress={() => {
-                    handleYearPickerChange(item);
-                    togglePicker();
-                    // Trigger a refresh to ensure data updates
-                    setIsLoading(true);
-                    setTimeout(() => setIsLoading(false), 800);
-                  }}
+                  onPress={() => handleYearSelect(item)}
                 >
                   <Text style={[
                     styles.yearItemText,
-                    item === yearPickerValue.year() && styles.selectedYearText
+                    item === yearPickerValue.year() &&
+                    styles.selectedYearText
                   ]}>
                     {item}
                   </Text>
@@ -278,7 +331,7 @@ const EnergyRecommendations = () => {
   );
 };
 
-// Helper function to map web icon names to Ionicons names (if needed elsewhere)
+// Helper function to map web icon names to Ionicons names
 export const getIconName = (webIconName) => {
   const iconMap = {
     'money': 'cash-outline',
@@ -291,7 +344,7 @@ export const getIconName = (webIconName) => {
     'solar': 'sunny-outline',
     'location': 'location-outline'
   };
-  
+
   return iconMap[webIconName] || 'help-circle-outline';
 };
 

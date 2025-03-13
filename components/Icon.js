@@ -8,127 +8,132 @@ import argonConfig from '../assets/config/argon.json';
 const ArgonExtra = require('../assets/font/argon.ttf');
 const IconArgonExtra = createIconSetFromIcoMoon(argonConfig, 'ArgonExtra');
 
-class IconExtra extends React.Component {
-  state = {
-    fontLoaded: false,
-  }
+// Convert the class component to a function component with hooks
+function IconExtra({ 
+  name = '', 
+  family = '',
+  size = 14,
+  color = 'black',
+  ...rest 
+}) {
+  const [fontLoaded, setFontLoaded] = React.useState(false);
 
-  async componentDidMount() {
-    try {
-      await Font.loadAsync({ ArgonExtra: ArgonExtra });
-      this.setState({ fontLoaded: true });
-      console.log("ArgonExtra font loaded successfully");
-    } catch (error) {
-      console.error("Failed to load ArgonExtra font:", error);
-    }
-  }
-
-  render() {
-    const { name, family, ...rest } = this.props;
-    
-    // If the font is loaded and we're using ArgonExtra, use the custom icon set
-    if (family === 'ArgonExtra' && this.state.fontLoaded) {
-      return <IconArgonExtra name={name} family={family} {...rest} />;
-    }
-    
-    // Convert any Ionicons naming pattern to Material Icons equivalents
-    if (name.includes('-outline')) {
-      const baseName = name.replace('-outline', '');
-      switch (baseName) {
-        case 'home':
-          return <MaterialIcons name="home" {...rest} />;
-        case 'share':
-          return <MaterialIcons name="share" {...rest} />;
-        case 'bulb':
-          return <MaterialIcons name="lightbulb" {...rest} />;
-        case 'settings':
-          return <MaterialIcons name="settings" {...rest} />;
-        case 'document-text':
-          return <MaterialIcons name="description" {...rest} />;
-        case 'sunny':
-          return <MaterialIcons name="wb-sunny" {...rest} />;
-        case 'thunderstorm':
-          return <MaterialIcons name="air" {...rest} />;
-        case 'flame':
-          return <MaterialIcons name="local-fire-department" {...rest} />;
-        case 'water':
-          return <MaterialIcons name="water-drop" {...rest} />;
-        case 'leaf':
-          return <MaterialIcons name="eco" {...rest} />;
-        case 'grid':
-          return <MaterialIcons name="dashboard" {...rest} />;
-        case 'help-circle':
-          return <MaterialIcons name="help" {...rest} />;
-        default:
-          return <MaterialIcons name="circle" size={rest.size || 14} color={rest.color || 'black'} />;
+  React.useEffect(() => {
+    async function loadFont() {
+      try {
+        await Font.loadAsync({ ArgonExtra: ArgonExtra });
+        setFontLoaded(true);
+        console.log("ArgonExtra font loaded successfully");
+      } catch (error) {
+        console.error("Failed to load ArgonExtra font:", error);
       }
     }
     
-    // Direct MaterialIcons usage
-    if (family === 'MaterialIcons') {
-      return <MaterialIcons name={name} {...rest} />;
-    }
-    
-    // Map common icon names to MaterialIcons
-    switch (name) {
+    loadFont();
+  }, []);
+
+  // If the font is loaded and we're using ArgonExtra, use the custom icon set
+  if (family === 'ArgonExtra' && fontLoaded) {
+    return <IconArgonExtra name={name} family={family} size={size} color={color} {...rest} />;
+  }
+  
+  // Convert any Ionicons naming pattern to Material Icons equivalents
+  if (name.includes('-outline')) {
+    const baseName = name.replace('-outline', '');
+    switch (baseName) {
       case 'home':
-        return <MaterialIcons name="home" {...rest} />;
-      case 'dashboard':
-        return <MaterialIcons name="dashboard" {...rest} />;
-      case 'wb-sunny':
-        return <MaterialIcons name="wb-sunny" {...rest} />;
-      case 'air':
-        return <MaterialIcons name="air" {...rest} />;
-      case 'local-fire-department':
-        return <MaterialIcons name="local-fire-department" {...rest} />;
-      case 'water-drop':
-        return <MaterialIcons name="water-drop" {...rest} />;
-      case 'eco':
-        return <MaterialIcons name="eco" {...rest} />;
-      case 'people':
-        return <MaterialIcons name="people" {...rest} />;
-      case 'bar-chart':
-        return <MaterialIcons name="bar-chart" {...rest} />;
-      case 'help':
-        return <MaterialIcons name="help" {...rest} />;
-      case 'logout':
-        return <MaterialIcons name="logout" {...rest} />;
-      case 'settings':
-        return <MaterialIcons name="settings" {...rest} />;
+        return <MaterialIcons name="home" size={size} color={color} {...rest} />;
       case 'share':
-        return <MaterialIcons name="share" {...rest} />;
-      case 'lightbulb':
-        return <MaterialIcons name="lightbulb" {...rest} />;
-      
-      // Map ArgonExtra icons to MaterialIcons
-      case 'shop':
-        return <MaterialIcons name="home" {...rest} />;
-      case 'map-big':
-        return <MaterialIcons name="dashboard" {...rest} />;
-      case 'spaceship':
-        return <MaterialIcons name="wb-sunny" {...rest} />;
-      case 'chart-pie-35':
-        return <MaterialIcons name="air" {...rest} />;
-      case 'calendar-date':
-        return <MaterialIcons name="local-fire-department" {...rest} />;
-      case 'profile-circle':
-        return <MaterialIcons name="people" {...rest} />;
-      case 'cart':
-        return <MaterialIcons name="bar-chart" {...rest} />;
-      case 'settings-gear-65':
-        return <MaterialIcons name="settings" {...rest} />;
-        
-      // For any other icon family, try to use a sensible default
+        return <MaterialIcons name="share" size={size} color={color} {...rest} />;
+      case 'bulb':
+        return <MaterialIcons name="lightbulb" size={size} color={color} {...rest} />;
+      case 'settings':
+        return <MaterialIcons name="settings" size={size} color={color} {...rest} />;
+      case 'document-text':
+        return <MaterialIcons name="description" size={size} color={color} {...rest} />;
+      case 'sunny':
+        return <MaterialIcons name="wb-sunny" size={size} color={color} {...rest} />;
+      case 'thunderstorm':
+        return <MaterialIcons name="air" size={size} color={color} {...rest} />;
+      case 'flame':
+        return <MaterialIcons name="local-fire-department" size={size} color={color} {...rest} />;
+      case 'water':
+        return <MaterialIcons name="water-drop" size={size} color={color} {...rest} />;
+      case 'leaf':
+        return <MaterialIcons name="eco" size={size} color={color} {...rest} />;
+      case 'grid':
+        return <MaterialIcons name="dashboard" size={size} color={color} {...rest} />;
+      case 'help-circle':
+        return <MaterialIcons name="help" size={size} color={color} {...rest} />;
       default:
-        if (name && family) {
-          try {
-            return <Icon name={name} family={family} {...rest} />;
-          } catch (error) {
-            return <MaterialIcons name="circle" size={rest.size || 14} color={rest.color || 'black'} />;
-          }
-        }
-        return <MaterialIcons name="circle" size={rest.size || 14} color={rest.color || 'black'} />;
+        return <MaterialIcons name="circle" size={size} color={color} {...rest} />;
     }
+  }
+  
+  // Direct MaterialIcons usage
+  if (family === 'MaterialIcons') {
+    return <MaterialIcons name={name} size={size} color={color} {...rest} />;
+  }
+  
+  // Map common icon names to MaterialIcons
+  switch (name) {
+    case 'home':
+      return <MaterialIcons name="home" size={size} color={color} {...rest} />;
+    case 'dashboard':
+      return <MaterialIcons name="dashboard" size={size} color={color} {...rest} />;
+    case 'wb-sunny':
+      return <MaterialIcons name="wb-sunny" size={size} color={color} {...rest} />;
+    case 'air':
+      return <MaterialIcons name="air" size={size} color={color} {...rest} />;
+    case 'local-fire-department':
+      return <MaterialIcons name="local-fire-department" size={size} color={color} {...rest} />;
+    case 'water-drop':
+      return <MaterialIcons name="water-drop" size={size} color={color} {...rest} />;
+    case 'eco':
+      return <MaterialIcons name="eco" size={size} color={color} {...rest} />;
+    case 'people':
+      return <MaterialIcons name="people" size={size} color={color} {...rest} />;
+    case 'bar-chart':
+      return <MaterialIcons name="bar-chart" size={size} color={color} {...rest} />;
+    case 'help':
+      return <MaterialIcons name="help" size={size} color={color} {...rest} />;
+    case 'logout':
+      return <MaterialIcons name="logout" size={size} color={color} {...rest} />;
+    case 'settings':
+      return <MaterialIcons name="settings" size={size} color={color} {...rest} />;
+    case 'share':
+      return <MaterialIcons name="share" size={size} color={color} {...rest} />;
+    case 'lightbulb':
+      return <MaterialIcons name="lightbulb" size={size} color={color} {...rest} />;
+    
+    // Map ArgonExtra icons to MaterialIcons
+    case 'shop':
+      return <MaterialIcons name="home" size={size} color={color} {...rest} />;
+    case 'map-big':
+      return <MaterialIcons name="dashboard" size={size} color={color} {...rest} />;
+    case 'spaceship':
+      return <MaterialIcons name="wb-sunny" size={size} color={color} {...rest} />;
+    case 'chart-pie-35':
+      return <MaterialIcons name="air" size={size} color={color} {...rest} />;
+    case 'calendar-date':
+      return <MaterialIcons name="local-fire-department" size={size} color={color} {...rest} />;
+    case 'profile-circle':
+      return <MaterialIcons name="people" size={size} color={color} {...rest} />;
+    case 'cart':
+      return <MaterialIcons name="bar-chart" size={size} color={color} {...rest} />;
+    case 'settings-gear-65':
+      return <MaterialIcons name="settings" size={size} color={color} {...rest} />;
+      
+    // For any other icon family, try to use a sensible default
+    default:
+      if (name && family) {
+        try {
+          return <Icon name={name} family={family} size={size} color={color} {...rest} />;
+        } catch (error) {
+          return <MaterialIcons name="circle" size={size} color={color} {...rest} />;
+        }
+      }
+      return <MaterialIcons name="circle" size={size} color={color} {...rest} />;
   }
 }
 

@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   Image,
   StatusBar,
-  FlatList
+  FlatList,
+  TextInput
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -65,35 +66,31 @@ const energyModules = [
 const quickActions = [
   {
     id: "sharing",
-    title: "Energy Sharing",
+    title: "Sharing",
     icon: "share-social",
     color: "#4CAF50",
-    route: "EnergySharing",
-    description: "Share surplus energy with community"
+    route: "EnergySharing"
   },
   {
     id: "recommendations",
-    title: "Recommendations",
+    title: "Tips",
     icon: "bulb",
     color: "#FF9800",
-    route: "Recommendations",
-    description: "Get efficiency suggestions"
+    route: "Recommendations"
   },
   {
     id: "help",
-    title: "Help & Support",
+    title: "Help",
     icon: "help-circle",
     color: "#03A9F4",
-    route: "HelpSupport",
-    description: "Get assistance with your system"
+    route: "HelpSupport"
   },
   {
     id: "settings",
     title: "Settings",
     icon: "settings",
     color: "#757575",
-    route: "Settings",
-    description: "Configure your dashboard"
+    route: "Settings"
   }
 ];
 
@@ -129,75 +126,92 @@ const Home = ({ navigation }) => {
     </TouchableOpacity>
   );
 
-  // Render quick action item
-  const renderQuickAction = ({ item }) => (
-    <TouchableOpacity 
-      style={styles.actionCard}
-      onPress={() => navigation.navigate(item.route)}
-    >
-      <View style={[styles.actionIconContainer, { backgroundColor: item.color }]}>
-        <Ionicons name={item.icon} size={24} color="#FFF" />
-      </View>
-      <Text style={styles.actionTitle}>{item.title}</Text>
-      <Text style={styles.actionDescription}>{item.description}</Text>
-    </TouchableOpacity>
-  );
-
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#4CAF50" />
+      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
       
-      {/* Header */}
-      <LinearGradient
-        colors={['#4CAF50', '#3E8E41']}
-        start={[0, 0]}
-        end={[1, 0]}
-        style={styles.header}
-      >
+      {/* Single Unified Header */}
+      <View style={styles.header}>
         <View style={styles.headerTopRow}>
           <TouchableOpacity 
             style={styles.headerButton} 
             onPress={() => navigation.openDrawer()}
           >
-            <Ionicons name="menu" size={26} color="#FFF" />
+            <Ionicons name="menu" size={24} color="#525F7F" />
           </TouchableOpacity>
           
-          <Text style={styles.headerTitle}>Dashboard</Text>
+          <Text style={styles.headerTitle}>Home</Text>
           
-          <TouchableOpacity style={styles.headerButton}>
-            <Ionicons name="notifications-outline" size={24} color="#FFF" />
-          </TouchableOpacity>
+          <View style={styles.headerIcons}>
+            <TouchableOpacity style={styles.headerButton}>
+              <Ionicons name="notifications-outline" size={22} color="#525F7F" />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.headerButton}>
+              <Ionicons name="cart-outline" size={22} color="#525F7F" />
+            </TouchableOpacity>
+          </View>
         </View>
         
-        <View style={styles.energySummaryContainer}>
-          <View style={styles.summaryItem}>
-            <Text style={styles.summaryValue}>24.5</Text>
-            <Text style={styles.summaryUnit}>kWh</Text>
-            <Text style={styles.summaryLabel}>Production</Text>
-          </View>
-          
-          <View style={styles.summaryDivider} />
-          
-          <View style={styles.summaryItem}>
-            <Text style={styles.summaryValue}>18.3</Text>
-            <Text style={styles.summaryUnit}>kWh</Text>
-            <Text style={styles.summaryLabel}>Consumption</Text>
-          </View>
-          
-          <View style={styles.summaryDivider} />
-          
-          <View style={styles.summaryItem}>
-            <Text style={styles.summaryValue}>6.2</Text>
-            <Text style={styles.summaryUnit}>kWh</Text>
-            <Text style={styles.summaryLabel}>Net</Text>
-          </View>
+        {/* Search Bar */}
+        <View style={styles.searchContainer}>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="What are you looking for?"
+            placeholderTextColor="#8D9BB5"
+          />
+          <Ionicons name="search" size={20} color="#8D9BB5" style={styles.searchIcon} />
         </View>
-      </LinearGradient>
+        
+        {/* Quick Links */}
+        <View style={styles.quickLinks}>
+          <TouchableOpacity style={styles.quickLink}>
+            <Ionicons name="location" size={16} color="#4CAF50" />
+            <Text style={styles.quickLinkText}>Articles</Text>
+          </TouchableOpacity>
+          
+          <View style={styles.quickLinkDivider} />
+          
+          <TouchableOpacity style={styles.quickLink}>
+            <Ionicons name="checkmark-circle" size={16} color="#3B5998" />
+            <Text style={styles.quickLinkText}>Contact</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+      
+      {/* Green Dashboard Border */}
+      <View style={styles.greenBorder} />
       
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContainer}
       >
+        {/* Energy Summary Section */}
+        <View style={styles.summarySection}>
+          <View style={styles.summaryContainer}>
+            <View style={styles.summaryItem}>
+              <Text style={styles.summaryValue}>24.5</Text>
+              <Text style={styles.summaryUnit}>kWh</Text>
+              <Text style={styles.summaryLabel}>Production</Text>
+            </View>
+            
+            <View style={styles.summaryDivider} />
+            
+            <View style={styles.summaryItem}>
+              <Text style={styles.summaryValue}>18.3</Text>
+              <Text style={styles.summaryUnit}>kWh</Text>
+              <Text style={styles.summaryLabel}>Consumption</Text>
+            </View>
+            
+            <View style={styles.summaryDivider} />
+            
+            <View style={styles.summaryItem}>
+              <Text style={styles.summaryValue}>6.2</Text>
+              <Text style={styles.summaryUnit}>kWh</Text>
+              <Text style={styles.summaryLabel}>Net</Text>
+            </View>
+          </View>
+        </View>
+
         {/* Welcome Section */}
         <View style={styles.welcomeSection}>
           <Text style={styles.welcomeTitle}>Welcome Back, Alex</Text>
@@ -246,24 +260,6 @@ const Home = ({ navigation }) => {
             ))}
           </View>
         </View>
-        
-        {/* Recommendation Card */}
-        <View style={styles.recommendationCard}>
-          <View style={styles.recommendationContent}>
-            <View style={styles.recommendationIconContainer}>
-              <Ionicons name="bulb" size={24} color="#FFD600" />
-            </View>
-            <View style={styles.recommendationTextContainer}>
-              <Text style={styles.recommendationTitle}>Energy Saving Tip</Text>
-              <Text style={styles.recommendationText}>
-                Adjust your solar panels by 15° east to increase morning energy production.
-              </Text>
-            </View>
-          </View>
-          <TouchableOpacity style={styles.recommendationButton}>
-            <Text style={styles.recommendationButtonText}>Apply</Text>
-          </TouchableOpacity>
-        </View>
       </ScrollView>
     </View>
   );
@@ -275,89 +271,135 @@ const styles = StyleSheet.create({
     backgroundColor: "#F5F7FA",
   },
   header: {
-    paddingTop: 40,
+    backgroundColor: "#FFFFFF",
+    paddingTop: 30,
     paddingHorizontal: 16,
-    paddingBottom: 16,
-    borderBottomLeftRadius: 16,
-    borderBottomRightRadius: 16,
-    overflow: 'hidden',
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.15,
-    shadowRadius: 10,
-    elevation: 8,
+    paddingBottom: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: "#EEEEEE",
   },
   headerTopRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 16,
+    marginBottom: 12,
   },
   headerButton: {
     width: 40,
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 20,
+  },
+  headerIcons: {
+    flexDirection: 'row',
   },
   headerTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
-    color: "#FFF",
+    color: "#525F7F",
   },
-  energySummaryContainer: {
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F8F9FB',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#EEEEEE',
+    paddingHorizontal: 12,
+    height: 44,
+    marginBottom: 12,
+  },
+  searchInput: {
+    flex: 1,
+    fontSize: 14,
+    color: '#525F7F',
+    height: '100%',
+  },
+  searchIcon: {
+    marginLeft: 8,
+  },
+  quickLinks: {
+    flexDirection: 'row',
+    marginBottom: 2,
+  },
+  quickLink: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+  },
+  quickLinkText: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#525F7F',
+    marginLeft: 6,
+  },
+  quickLinkDivider: {
+    width: 1,
+    height: 20,
+    backgroundColor: '#EEEEEE',
+    marginHorizontal: 8,
+  },
+  greenBorder: {
+    height: 3,
+    backgroundColor: "#4CAF50",
+    width: '100%',
+  },
+  summarySection: {
+    backgroundColor: '#FFF',
+    paddingVertical: 15,
+    paddingHorizontal: 16,
+    marginBottom: 10,
+  },
+  summaryContainer: {
     flexDirection: "row",
-    backgroundColor: "rgba(255,255,255,0.15)",
-    borderRadius: 12,
+    backgroundColor: "#F8F9FB",
+    borderRadius: 8,
     paddingVertical: 12,
     paddingHorizontal: 8,
-    marginTop: 8,
   },
   summaryItem: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
   },
   summaryDivider: {
     width: 1,
-    backgroundColor: "rgba(255,255,255,0.3)",
+    backgroundColor: "#E0E0E0",
     marginVertical: 5,
   },
   summaryValue: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: "bold",
-    color: "#FFF",
+    color: "#1E293B",
   },
   summaryUnit: {
-    fontSize: 14,
-    color: "rgba(255,255,255,0.9)",
-    fontWeight: "500",
+    fontSize: 12,
+    color: "#64748B",
   },
   summaryLabel: {
     fontSize: 12,
-    color: "rgba(255,255,255,0.8)",
-    marginTop: 4,
+    color: "#64748B",
+    marginTop: 2,
   },
   scrollContainer: {
     paddingBottom: 30,
   },
   welcomeSection: {
     paddingHorizontal: 16,
-    paddingVertical: 20,
+    paddingVertical: 16,
   },
   welcomeTitle: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: "bold",
     color: "#1E293B",
   },
   welcomeText: {
-    fontSize: 15,
+    fontSize: 14,
     color: "#64748B",
-    marginTop: 5,
-    lineHeight: 22,
+    marginTop: 4,
   },
   sectionContainer: {
-    marginBottom: 24,
+    marginBottom: 20,
   },
   sectionHeader: {
     flexDirection: "row",
@@ -367,7 +409,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
     color: "#1E293B",
   },
@@ -382,7 +424,7 @@ const styles = StyleSheet.create({
   },
   moduleCard: {
     width: width * 0.8,
-    height: 180,
+    height: 160,
     borderRadius: 12,
     overflow: "hidden",
     marginRight: 16,
@@ -402,45 +444,40 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    padding: 16,
+    padding: 12,
     paddingTop: 30,
     height: "60%",
   },
   moduleIconContainer: {
     position: "absolute",
-    top: -20,
-    left: 16,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    top: -15,
+    left: 12,
+    width: 34,
+    height: 34,
+    borderRadius: 17,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 3,
   },
   moduleContent: {
     flex: 1,
   },
   moduleTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
     color: "#FFF",
-    marginBottom: 4,
+    marginBottom: 2,
   },
   moduleDescription: {
-    fontSize: 14,
+    fontSize: 12,
     color: "rgba(255,255,255,0.85)",
-    marginBottom: 8,
+    marginBottom: 4,
   },
   moduleStats: {
     flexDirection: "row",
     alignItems: "baseline",
   },
   moduleStatsValue: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
     color: "#FFF",
     marginRight: 5,
@@ -451,15 +488,13 @@ const styles = StyleSheet.create({
   },
   quickAccessGrid: {
     flexDirection: "row",
-    flexWrap: "wrap",
-    paddingHorizontal: 8,
+    justifyContent: "space-around",
+    paddingHorizontal: 16,
+    marginTop: 8,
   },
   quickAccessItem: {
-    width: (width - 32) / 4,
     alignItems: "center",
     justifyContent: "center",
-    padding: 8,
-    marginBottom: 16,
   },
   quickAccessIcon: {
     width: 50,
@@ -467,98 +502,13 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 8,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 2,
+    marginBottom: 6,
   },
   quickAccessText: {
     fontSize: 12,
     fontWeight: "500",
     color: "#1E293B",
     textAlign: "center",
-  },
-  recommendationCard: {
-    margin: 16,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 12,
-    padding: 16,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 3,
-  },
-  recommendationContent: {
-    flexDirection: "row",
-    marginBottom: 16,
-  },
-  recommendationIconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: "rgba(255, 214, 0, 0.1)",
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 16,
-  },
-  recommendationTextContainer: {
-    flex: 1,
-  },
-  recommendationTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#1E293B",
-    marginBottom: 4,
-  },
-  recommendationText: {
-    fontSize: 14,
-    color: "#64748B",
-    lineHeight: 20,
-  },
-  recommendationButton: {
-    backgroundColor: "#4CAF50",
-    borderRadius: 8,
-    paddingVertical: 10,
-    alignItems: "center",
-  },
-  recommendationButtonText: {
-    color: "#FFFFFF",
-    fontWeight: "bold",
-    fontSize: 14,
-  },
-  actionCard: {
-    width: (width - 48) / 2,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 16,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  actionIconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 12,
-  },
-  actionTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#1E293B",
-    marginBottom: 4,
-  },
-  actionDescription: {
-    fontSize: 12,
-    color: "#64748B",
-    lineHeight: 18,
   }
 });
 
